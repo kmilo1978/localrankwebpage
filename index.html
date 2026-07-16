@@ -9,76 +9,851 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--accent:#f9a8d4;--dark:#050505}
+:root{--accent:#f9a8d4;--accent-glow:rgba(249,168,212,.15);--dark:#050505;--surface:#0a0a0f;--border:rgba(255,255,255,.08);--text:rgba(255,255,255,.7);--text-muted:rgba(255,255,255,.4)}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--dark);color:#e8e8e8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{text-decoration:none;color:inherit}ul{list-style:none}img,video{display:block;max-width:100%}
-.header{position:fixed;top:0;left:0;right:0;z-index:50;padding:1rem 2rem;backdrop-filter:blur(12px);background:rgba(0,0,0,.4)}
+
+/* ANIMATIONS */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes glow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}
+@keyframes particleFloat{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-100vh) translateX(20px);opacity:0}}
+@keyframes borderGlow{0%,100%{border-color:var(--border)}50%{border-color:rgba(249,168,212,.3)}}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.15s}.reveal-delay-3{transition-delay:.2s}.reveal-delay-4{transition-delay:.25s}.reveal-delay-5{transition-delay:.3s}
+.reveal-scale{opacity:0;transform:scale(.92);transition:opacity .6s ease,transform .6s ease}.reveal-scale.visible{opacity:1;transform:scale(1)}
+</style>
+<style>
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;z-index:50;padding:1rem 2rem;backdrop-filter:blur(16px);background:rgba(5,5,5,.5);border-bottom:1px solid var(--border);transition:all .4s ease}
+.header.scrolled{padding:.6rem 2rem;background:rgba(5,5,5,.9);box-shadow:0 4px 30px rgba(0,0,0,.3)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;max-width:1400px;margin:0 auto}
-.logo{font-size:1.5rem;font-weight:600;color:#fff}
-.nav{display:flex;gap:2.5rem;font-size:.875rem;color:rgba(255,255,255,.7)}.nav a:hover{color:#fff}
+.logo{font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em}.logo span{color:var(--accent)}
+.nav{display:flex;gap:2.5rem;font-size:.875rem;color:var(--text)}.nav a{transition:color .2s;position:relative}.nav a:hover{color:#fff}
+.nav a::after{content:'';position:absolute;bottom:-.25rem;left:0;width:0;height:1px;background:var(--accent);transition:width .3s ease}.nav a:hover::after{width:100%}
 .header-cta{display:flex;align-items:center;gap:1rem}
-.btn-primary{background:#fff;color:#000;font-weight:500;padding:.5rem 1.25rem;border-radius:9999px;font-size:.875rem;border:none;cursor:pointer;transition:opacity .2s}.btn-primary:hover{opacity:.9}
-.btn-outline{border:1px solid rgba(255,255,255,.3);color:#fff;padding:.5rem 1.25rem;border-radius:9999px;font-size:.875rem;transition:border-color .2s}.btn-outline:hover{border-color:rgba(255,255,255,.6)}
+.btn-primary{background:#fff;color:#000;font-weight:600;padding:.55rem 1.4rem;border-radius:9999px;font-size:.85rem;border:none;cursor:pointer;transition:all .3s}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(255,255,255,.2)}
+.btn-outline{border:1px solid rgba(255,255,255,.2);color:#fff;padding:.55rem 1.4rem;border-radius:9999px;font-size:.85rem;transition:all .3s}.btn-outline:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 24px var(--accent-glow)}
+
+/* HERO */
 .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:#000}
-.hero-video{position:absolute;inset:0;z-index:0}.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.7}
-.hero-overlay1{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.8),rgba(0,0,0,.4),transparent)}
-.hero-overlay2{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.3),transparent,rgba(0,0,0,.7))}
-.hero-grid{position:absolute;inset:0;z-index:1;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);background-size:10rem 7rem;pointer-events:none}
-.hero-content{position:relative;z-index:10;padding:8rem 2rem 3rem;max-width:1400px;margin:0 auto;width:100%}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
-.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.hero h1{color:#fff;font-size:clamp(2.5rem,7vw,6.5rem);font-weight:600;line-height:1.05;max-width:60rem}.hero h1 .accent{color:var(--accent)}
-.hero-desc{color:rgba(255,255,255,.6);font-size:1.25rem;margin-top:1.5rem;max-width:40rem;line-height:1.6}
+.hero-video{position:absolute;inset:0;z-index:0}.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity 1s}
+.hero-overlay1{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.9),rgba(0,0,0,.5) 60%,transparent)}
+.hero-overlay2{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.3),transparent 30%,rgba(0,0,0,.85))}
+.hero-grid{position:absolute;inset:0;z-index:1;opacity:.03;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:6rem 6rem;pointer-events:none}
+.hero-particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;animation:particleFloat linear infinite;opacity:0}
+.hero-content{position:relative;z-index:10;padding:8rem 2rem 3rem;max-width:1400px;margin:0 auto;width:100%;animation:fadeInUp .8s ease-out}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text);margin-bottom:1.5rem;padding:.45rem 1rem;border:1px solid var(--border);border-radius:9999px;backdrop-filter:blur(4px)}
+
+/* HERO REVIEWS */
+.hero-reviews{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.hero-review{background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;max-width:260px;transition:all .3s}
+.hero-review:hover{border-color:rgba(249,168,212,.2);background:rgba(255,255,255,.07)}
+.hero-review-stars{color:#f5a623;font-size:.7rem;margin-bottom:.35rem;letter-spacing:1px}
+.hero-review p{color:var(--text);font-size:.72rem;line-height:1.5}
+.hero-social-proof{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.hero-avatars{display:flex}
+.hero-avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--dark);margin-left:-8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--text-muted);overflow:hidden}
+.hero-avatars span:first-child{margin-left:0}
+.hero-avatars span img{width:100%;height:100%;object-fit:cover}
+.hero-social-proof p{font-size:.8rem;color:var(--text)}.hero-social-proof p strong{color:#fff}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+.hero h1{color:#fff;font-size:clamp(2.5rem,6.5vw,5.5rem);font-weight:600;line-height:1.08;max-width:56rem;letter-spacing:-.03em}
+.hero h1 .accent{color:var(--accent);position:relative}.hero h1 .accent::after{content:'';position:absolute;bottom:-.05em;left:0;width:100%;height:2px;background:var(--accent);opacity:.4}
+.accent{color:var(--accent)}
+.hero-desc{color:var(--text);font-size:1.15rem;margin-top:1.5rem;max-width:38rem;line-height:1.7}
 .hero-buttons{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
-.hero-stats{position:relative;z-index:10;padding:0 2rem 3rem;max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;gap:3rem}
-.stat{display:flex;flex-direction:column;gap:.25rem}.stat-val{color:#fff;font-size:clamp(1.75rem,3vw,2.25rem);font-weight:600}.stat-label{color:rgba(255,255,255,.5);font-size:.75rem}
-.section{padding:6rem 2rem}.section-inner{max-width:1400px;margin:0 auto}
-.section-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:rgba(255,255,255,.5);margin-bottom:1rem}.section-label span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3)}
-h2{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:600;color:#fff;line-height:1.2}
-.beneficios-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:1rem}
-.beneficios-list li{display:flex;align-items:flex-start;gap:.75rem;color:rgba(255,255,255,.6)}.beneficios-list li .arrow{color:var(--accent);flex-shrink:0}
-.beneficios-note{margin-top:2rem;font-size:.875rem;color:rgba(255,255,255,.4)}
-.proceso{background:#0a0a0f;position:relative;overflow:hidden}
-.proceso-glow{position:absolute;bottom:0;left:0;width:24rem;height:24rem;background:rgba(249,168,212,.05);filter:blur(120px);border-radius:50%}
-.proceso-problem{max-width:48rem;margin-bottom:5rem}.proceso-problem h2{font-size:clamp(1.75rem,4vw,3rem)}.proceso-problem p{color:rgba(255,255,255,.6);margin-top:1.5rem;font-size:1.125rem}.proceso-problem .sub{color:rgba(255,255,255,.5);font-size:1rem;margin-top:1rem}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
-.card{background:#000;border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:2.5rem;position:relative;overflow:hidden;transition:border-color .2s}.card:hover{border-color:rgba(255,255,255,.2)}.card.active{border-color:rgba(255,255,255,.4)}
-.card-top{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}.card-num{font-size:2.25rem;font-weight:300;color:rgba(255,255,255,.2)}.card.active .card-num{color:var(--accent)}.card-line{flex-grow:1;height:1px;background:rgba(255,255,255,.1)}
-.card h3{font-size:1.875rem;font-weight:600;color:#fff}.card .sub{color:rgba(255,255,255,.4);font-size:1.125rem}.card p{color:rgba(255,255,255,.5);font-size:.875rem;margin-top:1rem;line-height:1.6}.card-accent{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent)}
-.comparisons{display:flex;flex-direction:column}.comp-row{display:flex;justify-content:space-between;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.1);flex-wrap:wrap;gap:.5rem}.comp-row:last-child{border:none}.comp-before{color:rgba(255,255,255,.5)}.comp-after{color:#fff;font-weight:500}
-.planes-section{position:relative;overflow:hidden}.planes-glow{position:absolute;inset:0;opacity:.03;background-image:radial-gradient(circle at 30% 50%,rgba(249,168,212,.3) 0%,transparent 50%)}
-.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
-.plan-card{background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:1rem;padding:2rem;display:flex;flex-direction:column}.plan-card.featured{border-color:rgba(249,168,212,.3)}
-.plan-badge{position:absolute;top:1rem;right:1rem;background:var(--accent);color:#000;font-size:.75rem;font-weight:500;padding:.25rem .75rem;border-radius:9999px}
-.plan-name{color:var(--accent);font-size:.875rem;font-weight:500}.plan-price{color:#fff;font-size:1.875rem;font-weight:600;margin-top:.5rem}.plan-desc{color:rgba(255,255,255,.5);font-size:.875rem;margin-top:.5rem}
-.plan-features{margin-top:1.5rem;display:flex;flex-direction:column;gap:.625rem;flex-grow:1}.plan-features li{display:flex;align-items:flex-start;gap:.5rem;font-size:.875rem;color:rgba(255,255,255,.6)}.plan-features li .check{color:var(--accent)}
-.plan-time{color:rgba(255,255,255,.4);font-size:.75rem;margin-top:1rem}
-.plan-btn{display:flex;align-items:center;justify-content:center;width:100%;height:2.75rem;border-radius:9999px;font-weight:500;margin-top:1.5rem;cursor:pointer;border:none;font-size:.875rem}.plan-btn-white{background:#fff;color:#000}.plan-btn-accent{background:var(--accent);color:#000}
-.tags{display:flex;flex-wrap:wrap;gap:.75rem}.tag{border:1px solid rgba(255,255,255,.1);padding:.625rem 1.25rem;border-radius:9999px;font-size:.875rem;color:rgba(255,255,255,.6)}
-.ventajas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}.ventaja{display:flex;align-items:flex-start;gap:.75rem;font-size:.875rem;color:rgba(255,255,255,.7)}.ventaja .arrow{color:var(--accent)}
-.placeholder-box{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:1rem;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:.875rem}
-details{border-bottom:1px solid rgba(255,255,255,.1)}details:last-child{border:none}summary{padding:1.25rem 0;cursor:pointer;color:#fff;font-weight:500;display:flex;justify-content:space-between;align-items:center;font-size:1rem}summary::marker,summary::-webkit-details-marker{display:none}.faq-icon{color:rgba(255,255,255,.4);font-size:1.25rem;transition:transform .2s}details[open] .faq-icon{transform:rotate(45deg)}details p{color:rgba(255,255,255,.6);font-size:.875rem;padding-bottom:1.25rem}
-.cta-final{text-align:center}.cta-final h2{max-width:48rem;margin:0 auto}.cta-final .desc{color:rgba(255,255,255,.6);font-size:1.25rem;margin-top:1rem}.cta-buttons{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem;justify-content:center}.cta-sub{color:rgba(255,255,255,.4);font-size:.875rem;margin-top:1.5rem}.cta-sub2{color:rgba(255,255,255,.5);font-size:.875rem;margin-top:.5rem}
-.footer{background:#000;position:relative}.footer-img{position:relative;height:16rem;overflow:hidden}.footer-img img{width:100%;height:100%;object-fit:cover}.footer-img .overlay1{position:absolute;inset:0;background:linear-gradient(transparent,transparent 50%,#000)}.footer-img .overlay2{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.4),transparent,rgba(0,0,0,.4))}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2rem;padding:4rem 0}.footer-brand p{color:rgba(255,255,255,.5);font-size:.875rem;margin-top:.75rem;max-width:20rem}.footer-links{display:flex;gap:1.5rem;font-size:.875rem;color:rgba(255,255,255,.4);margin-top:1rem}.footer-col h3{color:#fff;font-weight:500;font-size:.875rem;margin-bottom:.75rem}.footer-col ul{display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:rgba(255,255,255,.4)}.footer-col a:hover{color:#fff}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);padding:1.5rem 0;font-size:.875rem;color:rgba(255,255,255,.3);flex-wrap:wrap;gap:1rem}.footer-status{display:flex;align-items:center;gap:.5rem}.footer-status span{width:8px;height:8px;background:var(--accent);border-radius:50%}
-.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;width:3.5rem;height:3.5rem;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:50;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s}.wa-float:hover{transform:scale(1.1)}.wa-float svg{width:1.75rem;height:1.75rem;fill:#fff}
-@media(max-width:768px){.nav{display:none}.header-cta a:first-child{display:none}.hero-content{padding:7rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:2rem}.section{padding:4rem 1.5rem}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.cards-grid,.plans-grid{grid-template-columns:1fr}}
+.hero-stats{position:relative;z-index:10;padding:0 2rem 3rem;max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;gap:3rem;animation:fadeInUp 1s ease-out .3s both}
+.stat{display:flex;flex-direction:column;gap:.2rem;padding-left:1rem;border-left:2px solid var(--border);transition:border-color .3s}.stat:hover{border-color:var(--accent)}
+.stat-val{color:#fff;font-size:clamp(1.6rem,2.5vw,2rem);font-weight:700}.stat-label{color:var(--text-muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}
+
+/* SECTIONS */
+.section{padding:4rem 2rem;position:relative}.section-inner{max-width:1200px;margin:0 auto;position:relative}
+.section-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;color:var(--accent);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.section-label span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+h2{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:600;color:#fff;line-height:1.2;letter-spacing:-.02em}
+.section-desc{color:var(--text);font-size:1rem;margin-top:.75rem;max-width:36rem;line-height:1.7}
+</style>
+<style>
+/* BENEFICIOS GRID */
+.beneficios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.beneficio-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;transition:all .35s ease;position:relative;overflow:hidden}
+.beneficio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.beneficio-card:hover{border-color:rgba(249,168,212,.2);transform:translateY(-3px);background:rgba(249,168,212,.02)}.beneficio-card:hover::before{opacity:1}
+.beneficio-icon{width:36px;height:36px;border-radius:8px;background:rgba(249,168,212,.08);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem;transition:background .3s}
+.beneficio-card:hover .beneficio-icon{background:rgba(249,168,212,.15)}
+.beneficio-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.beneficio-card h4{color:#fff;font-size:.9rem;font-weight:500;margin-bottom:.35rem}
+.beneficio-card p{color:var(--text-muted);font-size:.8rem;line-height:1.5}
+.beneficios-note{margin-top:1.5rem;font-size:.8rem;color:var(--text-muted);padding:.75rem 1rem;border-left:2px solid var(--accent);background:rgba(249,168,212,.02);border-radius:0 .5rem .5rem 0}
+
+/* PROCESO */
+.proceso{background:var(--surface);position:relative;overflow:hidden}
+.proceso::before{content:'';position:absolute;top:-30%;right:-15%;width:35rem;height:35rem;background:radial-gradient(circle,rgba(249,168,212,.05),transparent 70%);pointer-events:none}
+.proceso-glow{position:absolute;bottom:-8rem;left:-8rem;width:25rem;height:25rem;background:radial-gradient(circle,rgba(249,168,212,.06),transparent 70%);filter:blur(60px);border-radius:50%;animation:glow 8s ease-in-out infinite}
+.proceso-header{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-bottom:2.5rem}
+.proceso-header-img{border-radius:1rem;overflow:hidden;border:1px solid var(--border);position:relative}
+.proceso-header-img img{width:100%;height:280px;object-fit:cover;transition:transform 6s ease}.proceso-header-img:hover img{transform:scale(1.05)}
+.proceso-header-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(249,168,212,.05),transparent 50%)}
+.proceso-problem h2{font-size:clamp(1.5rem,3vw,2.25rem)}
+.proceso-problem p{color:var(--text);margin-top:.75rem;font-size:1rem;line-height:1.7}
+.proceso-problem .sub{color:var(--text-muted);font-size:.85rem;margin-top:.5rem;line-height:1.6}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.card{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:1rem;padding:2rem;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(249,168,212,.04),transparent 60%);opacity:0;transition:opacity .4s}
+.card:hover{border-color:rgba(249,168,212,.25);transform:translateY(-4px)}.card:hover::before{opacity:1}
+.card.active{border-color:rgba(249,168,212,.3)}
+.card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.card-num{font-size:2rem;font-weight:300;color:rgba(255,255,255,.12);transition:color .3s}.card:hover .card-num,.card.active .card-num{color:var(--accent)}
+.card-line{flex-grow:1;height:1px;background:var(--border);position:relative;overflow:hidden}
+.card-line::after{content:'';position:absolute;top:0;left:0;height:100%;width:0;background:var(--accent);transition:width .6s ease}.card:hover .card-line::after,.card.active .card-line::after{width:100%}
+.card h3{font-size:1.5rem;font-weight:600;color:#fff}.card .sub{color:var(--text-muted);font-size:.95rem}
+.card p{color:var(--text);font-size:.85rem;margin-top:.75rem;line-height:1.6}
+.card-accent{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .4s}.card:hover .card-accent,.card.active .card-accent{opacity:1}
+</style>
+<style>
+/* COMPARISONS */
+.comp-section{text-align:center;max-width:900px;margin:0 auto}
+.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
+.comp-card{display:flex;flex-direction:column;gap:.75rem;padding:1.25rem;border:1px solid var(--border);border-radius:.75rem;text-align:left;transition:all .3s;position:relative;overflow:hidden}
+.comp-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:0;transition:opacity .3s}
+.comp-card:hover{border-color:rgba(249,168,212,.2);background:rgba(249,168,212,.01)}.comp-card:hover::before{opacity:1}
+.comp-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding:.2rem .5rem;border-radius:3px;width:fit-content}
+.comp-label-before{color:var(--text-muted);background:rgba(255,255,255,.04)}
+.comp-label-after{color:var(--accent);background:rgba(249,168,212,.08)}
+.comp-text-before{color:var(--text-muted);font-size:.85rem;line-height:1.5;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.1)}
+.comp-text-after{color:#fff;font-size:.85rem;font-weight:500;line-height:1.5}
+.comp-divider{display:flex;align-items:center;justify-content:center;margin:0 auto}
+.comp-divider svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:2}
+
+/* PLANES */
+.planes-section{position:relative;overflow:hidden}
+.planes-glow{position:absolute;inset:0;opacity:.03;background-image:radial-gradient(circle at 30% 50%,rgba(249,168,212,.4) 0%,transparent 50%)}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+.plan-card{background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:1rem;padding:2rem;display:flex;flex-direction:column;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.plan-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.12);box-shadow:0 16px 50px rgba(0,0,0,.4)}
+.plan-card.featured{border-color:rgba(249,168,212,.2)}.plan-card.featured:hover{border-color:rgba(249,168,212,.4);box-shadow:0 16px 50px rgba(249,168,212,.08)}
+.plan-badge{position:absolute;top:1rem;right:1rem;background:var(--accent);color:#000;font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.05em}
+.plan-name{color:var(--accent);font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.plan-price{color:#fff;font-size:2rem;font-weight:700;margin-top:.4rem;letter-spacing:-.02em}
+.plan-desc{color:var(--text);font-size:.8rem;margin-top:.5rem;line-height:1.5}
+.plan-features{margin-top:1.5rem;display:flex;flex-direction:column;gap:.5rem;flex-grow:1}
+.plan-features li{display:flex;align-items:flex-start;gap:.4rem;font-size:.8rem;color:var(--text)}.plan-features li .check{color:var(--accent);font-weight:700;font-size:.7rem}
+.plan-time{color:var(--text-muted);font-size:.7rem;margin-top:1.25rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.plan-btn{display:flex;align-items:center;justify-content:center;width:100%;height:2.75rem;border-radius:9999px;font-weight:600;margin-top:1.25rem;cursor:pointer;border:none;font-size:.8rem;transition:all .3s}
+.plan-btn-white{background:#fff;color:#000}.plan-btn-white:hover{box-shadow:0 4px 20px rgba(255,255,255,.2);transform:translateY(-2px)}
+.plan-btn-accent{background:var(--accent);color:#000}.plan-btn-accent:hover{box-shadow:0 4px 20px rgba(249,168,212,.4);transform:translateY(-2px)}
+
+/* INDUSTRIES */
+.industries-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.industries-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2rem}
+.industry-item{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.25rem .75rem;border:1px solid var(--border);border-radius:.75rem;transition:all .3s;text-align:center}
+.industry-item:hover{border-color:rgba(249,168,212,.2);background:rgba(249,168,212,.02);transform:translateY(-2px)}
+.industry-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;opacity:.6;transition:opacity .3s}
+.industry-item:hover .industry-icon{opacity:1}
+.industry-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.industry-item span{font-size:.75rem;color:var(--text-muted);transition:color .3s}.industry-item:hover span{color:#fff}
+</style>
+<style>
+/* VENTAJAS */
+.ventajas-section{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:center}
+.ventajas-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.ventaja{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text);padding:.75rem;border-radius:.5rem;border:1px solid transparent;transition:all .3s}
+.ventaja:hover{border-color:var(--border);background:rgba(255,255,255,.02)}
+.ventaja-check{width:18px;height:18px;border-radius:50%;background:rgba(249,168,212,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ventaja-check svg{width:10px;height:10px;stroke:var(--accent);fill:none;stroke-width:2.5}
+.ventajas-visual{border-radius:1rem;overflow:hidden;border:1px solid var(--border);position:relative;background:#000;display:flex;align-items:center;justify-content:center}
+.ventajas-visual img{width:100%;height:auto;max-height:400px;object-fit:contain;transition:transform 6s ease}.ventajas-visual:hover img{transform:scale(1.04)}
+.ventajas-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(249,168,212,.03),transparent 50%)}
+
+/* MOCKUP PREVIEW */
+.mockup-section{position:relative;text-align:center}
+.mockup-browser{max-width:900px;margin:2rem auto 0;border-radius:1rem;border:1px solid var(--border);overflow:hidden;background:#111;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.mockup-toolbar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+.mockup-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}
+.mockup-dot:nth-child(1){background:#ff5f57}.mockup-dot:nth-child(2){background:#ffbd2e}.mockup-dot:nth-child(3){background:#28c840}
+.mockup-url{margin-left:.75rem;font-size:.65rem;color:var(--text-muted);background:rgba(255,255,255,.03);padding:.25rem .75rem;border-radius:4px;border:1px solid var(--border)}
+.mockup-body{position:relative;aspect-ratio:16/9;overflow:hidden}
+.mockup-body img{width:100%;height:100%;object-fit:cover;object-position:top}
+.mockup-body::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 80%,rgba(17,17,17,.8))}
+
+/* FAQ */
+.faq-section{display:flex;flex-direction:column;align-items:center}
+details{border-bottom:1px solid var(--border);transition:all .3s}details:last-child{border:none}
+details:hover{background:rgba(255,255,255,.01)}details[open]{background:rgba(249,168,212,.015)}
+summary{padding:1.25rem 1rem;cursor:pointer;color:#fff;font-weight:500;display:flex;justify-content:space-between;align-items:center;font-size:.9rem;transition:color .3s}
+summary:hover{color:var(--accent)}
+summary::marker,summary::-webkit-details-marker{display:none}
+.faq-icon{color:var(--text-muted);font-size:1rem;transition:all .3s;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border)}
+details[open] .faq-icon{transform:rotate(45deg);color:var(--accent);border-color:var(--accent)}
+details p{color:var(--text);font-size:.85rem;padding:0 1rem 1.25rem;line-height:1.7}
+
+/* CTA FINAL */
+.cta-final{text-align:center;position:relative;overflow:hidden;background:var(--surface);border-top:1px solid var(--border)}
+.cta-final::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30rem;height:30rem;background:radial-gradient(circle,rgba(249,168,212,.05),transparent 60%);pointer-events:none}
+.cta-final h2{max-width:44rem;margin:0 auto}
+.cta-final .desc{color:var(--text);font-size:1.1rem;margin-top:1rem;line-height:1.6}
+.cta-buttons{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem;justify-content:center}
+.cta-sub{color:var(--text-muted);font-size:.8rem;margin-top:1.5rem;letter-spacing:.02em}
+.cta-sub2{color:var(--text);font-size:.8rem;margin-top:.5rem}
+</style>
+<style>
+/* FOOTER */
+.footer{background:#000;position:relative;overflow:hidden}
+.footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.2}
+.footer-img{position:relative;height:12rem;overflow:hidden}
+.footer-img img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease}.footer-img:hover img{transform:scale(1.03)}
+.footer-img .overlay1{position:absolute;inset:0;background:linear-gradient(transparent,transparent 30%,#000)}
+.footer-img .overlay2{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.4),transparent,rgba(0,0,0,.4))}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2rem;padding:3rem 0}
+.footer-brand p{color:var(--text);font-size:.8rem;margin-top:.6rem;max-width:18rem;line-height:1.6}
+.footer-links{display:flex;gap:1rem;font-size:.8rem;color:var(--text-muted);margin-top:.75rem}.footer-links a{transition:color .2s}.footer-links a:hover{color:var(--accent)}
+.footer-col h3{color:#fff;font-weight:500;font-size:.8rem;margin-bottom:.75rem}
+.footer-col ul{display:flex;flex-direction:column;gap:.4rem;font-size:.8rem;color:var(--text-muted)}.footer-col a{transition:color .2s}.footer-col a:hover{color:#fff}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding:1.25rem 0;font-size:.75rem;color:var(--text-muted);flex-wrap:wrap;gap:1rem}
+.footer-status{display:flex;align-items:center;gap:.4rem}.footer-status span{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+
+/* WHATSAPP */
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;width:3.25rem;height:3.25rem;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:50;box-shadow:0 4px 20px rgba(37,211,102,.35);transition:all .3s;animation:float 3s ease-in-out infinite}
+.wa-float:hover{transform:scale(1.12);box-shadow:0 6px 28px rgba(37,211,102,.5)}.wa-float svg{width:1.6rem;height:1.6rem;fill:#fff}
+
+/* DECORATIVE DIVIDERS */
+.section-divider{position:relative;width:100%;height:6rem;overflow:hidden;margin:-1rem 0}
+.section-divider img{width:100%;height:100%;object-fit:cover;opacity:.5}
+.section-divider::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,var(--dark),transparent 20%,transparent 80%,var(--dark));z-index:1}
+.section-divider-surface::before{background:linear-gradient(to bottom,var(--surface),transparent 20%,transparent 80%,var(--dark))}
+.section-divider-to-surface::before{background:linear-gradient(to bottom,var(--dark),transparent 20%,transparent 80%,var(--surface))}
+
+/* INCLUDES GRID */
+.includes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.include-block{padding:1.5rem;border:1px solid var(--border);border-radius:.75rem;transition:all .3s}
+.include-block:hover{border-color:rgba(249,168,212,.15);background:rgba(249,168,212,.01)}
+.include-block h4{color:#fff;font-size:.85rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.include-block h4 svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.include-block ul{display:flex;flex-direction:column;gap:.4rem}
+.include-block li{font-size:.8rem;color:var(--text);display:flex;align-items:flex-start;gap:.35rem}
+.include-block li::before{content:'·';color:var(--accent);font-weight:700;line-height:1}
+
+/* WACRM */
+.wacrm-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:2rem}
+.wacrm-card{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:.75rem;padding:1.75rem;transition:all .3s}
+.wacrm-card:hover{border-color:rgba(249,168,212,.2);transform:translateY(-2px)}
+.wacrm-card h4{color:#fff;font-size:.9rem;font-weight:600;margin-bottom:.5rem}
+.wacrm-card p{color:var(--text);font-size:.8rem;line-height:1.6}
+.wacrm-card .tag-inline{display:inline-block;background:rgba(249,168,212,.08);color:var(--accent);font-size:.7rem;font-weight:600;padding:.2rem .5rem;border-radius:4px;margin-bottom:.5rem}
+
+/* SERVICES EXTRA */
+.services-extra{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.service-extra-card{padding:1.25rem;border:1px solid var(--border);border-radius:.75rem;transition:all .3s}
+.service-extra-card:hover{border-color:rgba(249,168,212,.15);background:rgba(255,255,255,.01);transform:translateY(-2px)}
+.service-extra-card h4{color:#fff;font-size:.8rem;font-weight:500;margin-bottom:.25rem;display:flex;align-items:center;gap:.4rem}
+.service-extra-card h4 svg{width:14px;height:14px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.service-extra-card p{color:var(--text-muted);font-size:.7rem;line-height:1.5}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.beneficios-grid{grid-template-columns:repeat(2,1fr)}.industries-grid{grid-template-columns:repeat(3,1fr)}.cards-grid,.plans-grid{grid-template-columns:repeat(2,1fr)}.proceso-header,.ventajas-section{grid-template-columns:1fr}.includes-grid,.services-extra{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.nav{display:none}.header-cta a:first-child{display:none}.hero-content{padding:6rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:1.5rem}.section{padding:3rem 1.5rem}.beneficios-grid,.cards-grid,.plans-grid,.industries-grid,.ventajas-grid,.includes-grid,.wacrm-cards,.services-extra{grid-template-columns:1fr}.comp-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.ventajas-section{gap:2rem}.mockup-browser{margin:1.5rem auto 0}}
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner"><a href="#" class="logo">LocalRank</a><nav class="nav"><a href="#beneficios">Beneficios</a><a href="#como-trabajamos">Proceso</a><a href="#planes">Planes</a><a href="#faq">Preguntas frecuentes</a></nav><div class="header-cta"><a href="#planes" style="font-size:.875rem;color:rgba(255,255,255,.7)">Ver planes</a><a href="#planes" class="btn-primary">Quiero mi página web</a></div></div></header>
-<section class="hero"><div class="hero-video"><video autoplay muted loop playsinline><source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4"></video><div class="hero-overlay1"></div><div class="hero-overlay2"></div></div><div class="hero-grid"></div><div class="hero-content"><div class="hero-badge"><span></span> Desde USD 250 · Entrega desde 5 días hábiles · Hosting y dominio incluidos</div><h1>Haga que su negocio transmita <span class="accent">confianza</span> desde el primer clic</h1><p class="hero-desc">Diseñamos páginas web rápidas, modernas y adaptadas a celulares para que sus clientes encuentren la información que necesitan y puedan contactarlo fácilmente.</p><div class="hero-buttons"><a href="#planes" class="btn-primary" style="padding:.75rem 1.75rem">Quiero mi página web</a><a href="#planes" class="btn-outline" style="padding:.75rem 1.75rem">Empezar mi proyecto</a></div></div><div class="hero-stats"><div class="stat"><span class="stat-val">5 días</span><span class="stat-label">entrega plan esencial</span></div><div class="stat"><span class="stat-val">100%</span><span class="stat-label">responsive y optimizado</span></div><div class="stat"><span class="stat-val">3 planes</span><span class="stat-label">para cada tipo de negocio</span></div></div></section>
-<section id="beneficios" class="section"><div class="section-inner"><div class="section-label"><span></span> Beneficios</div><h2>La primera impresión de su negocio ya no ocurre en persona. Ocurre cuando alguien lo busca en Internet.</h2><ul class="beneficios-list"><li><span class="arrow">→</span> Facilite que más clientes se pongan en contacto con usted.</li><li><span class="arrow">→</span> Muestre sus servicios de forma clara.</li><li><span class="arrow">→</span> Facilite el contacto desde cualquier dispositivo.</li><li><span class="arrow">→</span> Centralice toda la información de su negocio.</li><li><span class="arrow">→</span> Transmita una imagen profesional desde el primer clic.</li><li><span class="arrow">→</span> Hosting y dominio incluidos, sin pasos técnicos que resolver.</li></ul><p class="beneficios-note">Código moderno que facilita futuras actualizaciones y el crecimiento del sitio. Desarrollado con tecnologías modernas como Node.js.</p></div></section>
-<section id="como-trabajamos" class="section proceso"><div class="proceso-glow"></div><div class="section-inner" style="position:relative"><div class="proceso-problem"><h2>Cada día que pasa sin una página web profesional, algunas personas encuentran a su competencia antes que a usted.</h2><p>No porque sea mejor. Simplemente porque transmite más confianza.</p><p class="sub">Así toman decisiones la mayoría de los clientes: buscan en Google, comparan opciones, eligen el negocio que les genera más confianza y se ponen en contacto.</p><p class="sub">Una página web trabaja por su negocio incluso cuando usted está descansando.</p></div><div class="cards-grid"><div class="card"><div class="card-top"><span class="card-num">01</span><div class="card-line"></div></div><h3>Brief inicial</h3><span class="sub">su negocio</span><p>Recopilamos la información de su negocio con un breve formulario. Nosotros nos encargamos del resto del proceso.</p><div class="card-accent"></div></div><div class="card"><div class="card-top"><span class="card-num">02</span><div class="card-line"></div></div><h3>Diseño</h3><span class="sub">y desarrollo</span><p>Estructura y textos revisados por usted. Diseño rápido y optimizado para todos los dispositivos.</p><div class="card-accent"></div></div><div class="card active"><div class="card-top"><span class="card-num">03</span><div class="card-line"></div></div><h3>Publicación</h3><span class="sub">en línea</span><p>Revisión y ajustes dentro del alcance contratado. Publicación de su nueva presencia digital lista para convertir visitantes en clientes.</p><div class="card-accent"></div></div></div></div></section>
-<section class="section"><div class="section-inner" style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start"><div><h2>Antes y después</h2><p style="color:rgba(255,255,255,.5);margin-top:1rem">Así cambia la presencia digital de su negocio.</p></div><div class="comparisons"><div class="comp-row"><span class="comp-before">Solo depende de redes sociales</span><span class="comp-after">→ Página web profesional</span></div><div class="comp-row"><span class="comp-before">Los clientes hacen muchas preguntas</span><span class="comp-after">→ Información clara y organizada</span></div><div class="comp-row"><span class="comp-before">Difícil transmitir confianza</span><span class="comp-after">→ Imagen profesional desde el primer clic</span></div><div class="comp-row"><span class="comp-before">Se pierden oportunidades de contacto</span><span class="comp-after">→ WhatsApp y formularios integrados</span></div><div class="comp-row"><span class="comp-before">Cada vendedor explica lo mismo</span><span class="comp-after">→ El sitio responde las dudas frecuentes</span></div><div class="comp-row"><span class="comp-before">Presencia digital limitada</span><span class="comp-after">→ Un negocio visible y mejor presentado</span></div></div></div></section>
-<section id="planes" class="section planes-section"><div class="planes-glow"></div><div class="section-inner" style="position:relative"><h2>Elija el plan que mejor se adapte a su negocio</h2><p style="color:rgba(255,255,255,.6);font-size:1.125rem;margin-top:1rem;max-width:40rem">Cada día sin una página web profesional es una oportunidad más para que un cliente termine eligiendo a su competencia.</p><div class="plans-grid" style="margin-top:3rem"><div class="plan-card"><span class="plan-name">Plan Esencial</span><div class="plan-price">USD 250</div><p class="plan-desc">Ideal para negocios que necesitan comenzar rápido su presencia digital.</p><ul class="plan-features"><li><span class="check">✓</span> Landing profesional (una página)</li><li><span class="check">✓</span> Diseño responsive</li><li><span class="check">✓</span> Botón de WhatsApp</li><li><span class="check">✓</span> Formulario de contacto</li><li><span class="check">✓</span> Mapa (si aplica)</li><li><span class="check">✓</span> SEO On Page básico</li><li><span class="check">✓</span> Dominio y hosting incluidos</li></ul><p class="plan-time">≈ 5 días hábiles</p><button class="plan-btn plan-btn-white">Quiero este plan</button></div><div class="plan-card featured" style="position:relative"><span class="plan-badge">Recomendado</span><span class="plan-name">Plan Profesional</span><div class="plan-price">USD 450</div><p class="plan-desc">Ideal para negocios que necesitan una presencia digital sólida.</p><ul class="plan-features"><li><span class="check">✓</span> Hasta 5 secciones</li><li><span class="check">✓</span> Diseño responsive</li><li><span class="check">✓</span> Formularios y WhatsApp</li><li><span class="check">✓</span> SEO On Page básico</li><li><span class="check">✓</span> Perfil de empresa en Google</li><li><span class="check">✓</span> Dominio y hosting incluidos</li><li><span class="check">✓</span> Licencia waCRM (6 meses)</li><li><span class="check">✓</span> Páginas legales básicas</li></ul><p class="plan-time">≈ 15 días tras aprobar estructura y textos</p><button class="plan-btn plan-btn-accent">Quiero este plan</button></div><div class="plan-card"><span class="plan-name">Plan Empresarial</span><div class="plan-price">USD 800</div><p class="plan-desc">Pensado para empresas con varios servicios o líneas de negocio.</p><ul class="plan-features"><li><span class="check">✓</span> Hasta 15 subpáginas</li><li><span class="check">✓</span> Diseño responsive</li><li><span class="check">✓</span> SEO estructural básico</li><li><span class="check">✓</span> Arquitectura preparada para crecer</li><li><span class="check">✓</span> Perfil de empresa en Google</li><li><span class="check">✓</span> Formularios y WhatsApp</li><li><span class="check">✓</span> Dominio y hosting incluidos</li><li><span class="check">✓</span> Licencia waCRM (1 año)</li><li><span class="check">✓</span> Páginas legales básicas</li></ul><p class="plan-time">≈ 30 días tras aprobar estructura y textos</p><button class="plan-btn plan-btn-white">Quiero este plan</button></div></div><p style="color:rgba(255,255,255,.4);font-size:.875rem;margin-top:2.5rem;max-width:56rem">Forma de pago: 50% por adelantado para iniciar el proyecto y 50% al finalizar. Dominio y hosting incluidos el primer año. Página adicional: COP 150.000. No se prometen primeros lugares ni posicionamiento garantizado.</p></div></section>
-<section class="section"><div class="section-inner"><h2 style="margin-bottom:2rem">Ideal para negocios como el suyo</h2><div class="tags"><span class="tag">Restaurantes</span><span class="tag">Clínicas</span><span class="tag">Odontólogos</span><span class="tag">Veterinarias</span><span class="tag">Abogados</span><span class="tag">Ferreterías</span><span class="tag">Talleres</span><span class="tag">Constructoras</span><span class="tag">Inmobiliarias</span><span class="tag">Empresas de servicios</span></div></div></section>
-<section class="section"><div class="section-inner" style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start"><div><h2>Por qué elegir LocalRank</h2><p style="color:rgba(255,255,255,.5);margin-top:1rem;line-height:1.6">Nos especializamos en crear páginas web para negocios locales que necesitan transmitir confianza, mostrar mejor sus servicios y facilitar el contacto con nuevos clientes.</p></div><div class="ventajas-grid"><div class="ventaja"><span class="arrow">→</span><span>Diseño profesional y moderno</span></div><div class="ventaja"><span class="arrow">→</span><span>Optimización para celulares</span></div><div class="ventaja"><span class="arrow">→</span><span>Integración con WhatsApp</span></div><div class="ventaja"><span class="arrow">→</span><span>SEO On Page básico</span></div><div class="ventaja"><span class="arrow">→</span><span>Hosting y dominio gestionados</span></div><div class="ventaja"><span class="arrow">→</span><span>Proceso organizado y transparente</span></div><div class="ventaja"><span class="arrow">→</span><span>Tiempos de entrega definidos</span></div><div class="ventaja"><span class="arrow">→</span><span>Soporte posterior por horas</span></div><div class="ventaja"><span class="arrow">→</span><span>Sin costos ocultos</span></div><div class="ventaja"><span class="arrow">→</span><span>Cada sitio se diseña a partir de su negocio</span></div></div></div></section>
-<section class="section"><div class="section-inner"><h2 style="margin-bottom:.5rem">Así puede verse su nueva página web</h2><p style="color:rgba(255,255,255,.5);margin-bottom:2rem;max-width:40rem">Diseño moderno y profesional, navegación clara, botón de WhatsApp siempre visible, formularios de contacto, optimizada para celulares.</p><div class="placeholder-box">Captura de proyecto · 16:9</div></div></section>
-<section id="faq" class="section"><div class="section-inner"><h2 style="margin-bottom:3rem">Preguntas frecuentes</h2><div style="max-width:48rem"><details open><summary>¿Qué necesito para empezar? <span class="faq-icon">+</span></summary><p>Solo debe completar un breve formulario con la información de su negocio. Nosotros nos encargamos del resto del proceso.</p></details><details><summary>¿Necesito conocimientos técnicos? <span class="faq-icon">+</span></summary><p>No, nos encargamos de todo el proceso técnico.</p></details><details><summary>¿Debo entregar todos los textos? <span class="faq-icon">+</span></summary><p>No necesariamente, ayudamos a redactar el contenido.</p></details><details><summary>¿Incluye dominio y hosting? <span class="faq-icon">+</span></summary><p>Sí, en los 3 planes, durante el primer año. Nosotros instalamos y configuramos todo.</p></details><details><summary>¿Incluye textos legales redactados por un abogado? <span class="faq-icon">+</span></summary><p>No. Incluimos la maquetación de las páginas legales usando los textos que usted proporcione o plantillas genéricas.</p></details><details><summary>¿Incluye soporte para waCRM? <span class="faq-icon">+</span></summary><p>El acceso a la licencia solo cubre el uso de la herramienta durante el período indicado. No incluye soporte ni implementación por parte de LocalRank.</p></details><details><summary>¿Qué pasa después del primer año? <span class="faq-icon">+</span></summary><p>Le avisamos con tiempo para que decida si quiere renovar, cambiar de proveedor o que le ayudemos con la migración. No cobramos recargos ocultos.</p></details><details><summary>¿Puedo pedir cambios después? <span class="faq-icon">+</span></summary><p>Sí, mediante bolsa de horas.</p></details><details><summary>¿Cuánto tarda el proyecto? <span class="faq-icon">+</span></summary><p>Esencial: ≈ 5 días. Profesional: ≈ 15 días. Empresarial: ≈ 30 días.</p></details><details><summary>¿Una página web garantiza más clientes? <span class="faq-icon">+</span></summary><p>No se garantizan resultados, pero aumenta la confianza y facilita el contacto.</p></details></div></div></section>
-<section class="section cta-final"><div class="section-inner"><h2>Empiece hoy a mostrar su negocio con la confianza que merece.</h2><p class="desc">No espere a que sus clientes encuentren primero a otro negocio.</p><div class="cta-buttons"><a href="#planes" class="btn-primary" style="padding:.875rem 2rem">Quiero mi página web</a><a href="#planes" class="btn-outline" style="padding:.875rem 2rem">Empezar mi proyecto</a></div><p class="cta-sub">Atención personalizada · Respuesta rápida · Sin costos ocultos</p><p class="cta-sub2">Le respondemos en menos de un día hábil y le explicamos todo el proceso antes de que tome cualquier decisión.</p></div></section>
-<footer class="footer"><div class="footer-img"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2810%29-UnDKstODkIENp5xqTYUEpt0Sm8tNOw.png" alt=""><div class="overlay1"></div><div class="overlay2"></div></div><div style="padding:0 2rem;max-width:1400px;margin:0 auto"><div class="footer-grid"><div class="footer-brand"><a href="#" class="logo">LocalRank</a><p>Diseño web profesional para negocios locales que quieren más clientes.</p><div class="footer-links"><a href="#">WhatsApp</a><a href="#">Correo</a></div></div><div class="footer-col"><h3>Planes</h3><ul><li><a href="#planes">Página Esencial</a></li><li><a href="#planes">Página Profesional</a></li><li><a href="#planes">Página Empresarial</a></li></ul></div><div class="footer-col"><h3>Proceso</h3><ul><li><a href="#como-trabajamos">Brief inicial</a></li><li><a href="#como-trabajamos">Diseño y desarrollo</a></li><li><a href="#como-trabajamos">Publicación</a></li></ul></div><div class="footer-col"><h3>Servicios</h3><ul><li>SEO Local avanzado</li><li>Google Ads y Meta</li><li>Automatizaciones</li><li>Mantenimiento mensual</li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="#">Aviso legal</a></li><li><a href="#">Política de privacidad</a></li><li><a href="#">Términos y condiciones</a></li></ul></div></div><div class="footer-bottom"><p>© 2025 LocalRank. Todos los derechos reservados.</p><div class="footer-status"><span></span> Tiempo de respuesta: mismo día hábil</div></div></div></footer>
-<a href="#" class="wa-float" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.574-1.47A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.587-5.932-1.61l-.425-.253-2.715.873.862-2.638-.278-.44A9.77 9.77 0 012.182 12c0-5.423 4.395-9.818 9.818-9.818 5.423 0 9.818 4.395 9.818 9.818 0 5.423-4.395 9.818-9.818 9.818z"/></svg></a>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">Local<span>Rank</span></a>
+    <nav class="nav">
+      <a href="#beneficios">Beneficios</a>
+      <a href="#como-trabajamos">Proceso</a>
+      <a href="#planes">Planes</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="#planes" style="font-size:.8rem;color:var(--text)">Ver planes</a>
+      <a href="#planes" class="btn-primary">Quiero mi página web</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video">
+    <video autoplay muted loop playsinline>
+      <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay1"></div>
+    <div class="hero-overlay2"></div>
+  </div>
+  <div class="hero-grid"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-reviews">
+      <div class="hero-review">
+        <div class="hero-review-stars">★★★★★</div>
+        <p>Les confiamos el diseño de nuestra nueva web y fue la mejor decisión. ¡Cero estrés y quedó hermosa! 😍</p>
+      </div>
+      <div class="hero-review">
+        <div class="hero-review-stars">★★★★★</div>
+        <p>Desde que el equipo de Localrank nos entregó la landing page, las consultas no paran de llegar. 📈</p>
+      </div>
+      <div class="hero-review">
+        <div class="hero-review-stars">★★★★★</div>
+        <p>Entendieron exactamente lo que nuestro negocio necesitaba. Entrega súper rápida y resultado impecable. 👏🏼</p>
+      </div>
+    </div>
+    <div class="hero-social-proof">
+      <img src="https://statics.pancake.vn/web-media-263/ec/70/8e/6f/1716c4391e86734d3ced641ec14bf7874ec9a0087dca310123059118.png" alt="Clientes satisfechos" style="height:36px;border-radius:9999px">
+      <p><strong>+50 dueños</strong> de negocios locales ya confían en nosotros</p>
+    </div>
+    <div class="hero-badge"><span></span> Desde USD 250 · Entrega desde 5 días hábiles · Hosting y dominio incluidos</div>
+    <h1>Haga que su negocio transmita <span class="accent">confianza</span> desde el primer clic</h1>
+    <p class="hero-desc">Diseñamos páginas web rápidas, modernas y adaptadas a celulares para que sus clientes encuentren la información que necesitan y puedan contactarlo fácilmente.</p>
+    <div class="hero-buttons">
+      <a href="#planes" class="btn-primary" style="padding:.7rem 1.75rem">Quiero mi página web</a>
+      <a href="#planes" class="btn-outline" style="padding:.7rem 1.75rem">Empezar mi proyecto</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val">5 días</span><span class="stat-label">entrega plan esencial</span></div>
+    <div class="stat"><span class="stat-val">100%</span><span class="stat-label">responsive y optimizado</span></div>
+    <div class="stat"><span class="stat-val">3 planes</span><span class="stat-label">para cada tipo de negocio</span></div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="section-divider">
+  <img src="https://images.pexels.com/photos/16246517/pexels-photo-16246517.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=1400" alt="" loading="lazy">
+</div>
+
+<!-- BENEFICIOS -->
+<section id="beneficios" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label"><span></span> Beneficios</div>
+      <h2>La primera impresión de su negocio ya no ocurre en persona. Ocurre cuando alguien lo busca en <span class="accent"></span>Internet.</span></h2>
+    </div>
+    <div class="beneficios-grid">
+      <div class="beneficio-card reveal reveal-delay-1">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>Más clientes en contacto</h4>
+        <p>Facilite que más clientes se pongan en contacto con usted.</p>
+      </div>
+      <div class="beneficio-card reveal reveal-delay-2">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+        <h4>Servicios claros</h4>
+        <p>Muestre sus servicios de forma clara y organizada.</p>
+      </div>
+      <div class="beneficio-card reveal reveal-delay-3">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+        <h4>Contacto desde cualquier dispositivo</h4>
+        <p>Facilite el contacto desde celulares, tablets y computadores.</p>
+      </div>
+      <div class="beneficio-card reveal reveal-delay-4">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h4>Información centralizada</h4>
+        <p>Centralice toda la información de su negocio en un solo lugar.</p>
+      </div>
+      <div class="beneficio-card reveal reveal-delay-5">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h4>Imagen profesional</h4>
+        <p>Transmita una imagen profesional desde el primer clic.</p>
+      </div>
+      <div class="beneficio-card reveal reveal-delay-5">
+        <div class="beneficio-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h4>Hosting y dominio incluidos</h4>
+        <p>Sin pasos técnicos que resolver. Nosotros gestionamos todo.</p>
+      </div>
+    </div>
+    <p class="beneficios-note reveal">Código moderno que facilita futuras actualizaciones y el crecimiento del sitio. Desarrollado con tecnologías modernas como Node.js.</p>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="como-trabajamos" class="section proceso">
+  <div class="proceso-glow"></div>
+  <div class="section-inner">
+    <div class="proceso-header reveal">
+      <div class="proceso-problem">
+        <div class="section-label"><span></span> Proceso</div>
+        <h2>Cada día que pasa sin una página web profesional, algunas personas encuentran a su <span class="accent">competencia</span> antes que a usted.</h2>
+        <p>No porque sea mejor. Simplemente porque transmite más confianza.</p>
+        <p class="sub">Así toman decisiones la mayoría de los clientes: buscan en Google, comparan opciones, eligen el negocio que les genera más confianza y se ponen en contacto.</p>
+        <p class="sub">Una página web trabaja por su negocio incluso cuando usted está descansando.</p>
+      </div>
+      <div class="proceso-header-img reveal-scale">
+        <img src="https://statics.pancake.vn/web-media-263/89/7a/15/c5/96d17696adf1671ae7d4873f287b3745e5c06a23dc171b0d3f84deed.png" alt="Ecosistema digital LocalRank" loading="lazy">
+      </div>
+    </div>
+    <div class="cards-grid">
+      <div class="card reveal reveal-delay-1">
+        <div class="card-top"><span class="card-num">01</span><div class="card-line"></div></div>
+        <h3>Brief inicial</h3><span class="sub">su negocio</span>
+        <p>Recopilamos la información de su negocio con un breve formulario. Nosotros nos encargamos del resto del proceso.</p>
+        <div class="card-accent"></div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-top"><span class="card-num">02</span><div class="card-line"></div></div>
+        <h3>Diseño</h3><span class="sub">y desarrollo</span>
+        <p>Estructura y textos revisados por usted. Diseño rápido y optimizado para todos los dispositivos.</p>
+        <div class="card-accent"></div>
+      </div>
+      <div class="card active reveal reveal-delay-3">
+        <div class="card-top"><span class="card-num">03</span><div class="card-line"></div></div>
+        <h3>Publicación</h3><span class="sub">en línea</span>
+        <p>Revisión y ajustes dentro del alcance contratado. Publicación de su nueva presencia digital lista para convertir visitantes en clientes.</p>
+        <div class="card-accent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTES Y DESPUES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="comp-section">
+      <div class="section-label reveal"><span></span> Transformación</div>
+      <h2 class="reveal">Antes y <span class="accent"></span>después</span></h2>
+      <p class="section-desc reveal" style="margin:.75rem auto 0;text-align:center">Así cambia la presencia digital de su negocio.</p>
+      <div class="comp-grid">
+        <div class="comp-card reveal reveal-delay-1">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Solo depende de redes sociales</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">Página web profesional</p>
+        </div>
+        <div class="comp-card reveal reveal-delay-1">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Los clientes hacen muchas preguntas</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">Información clara y organizada</p>
+        </div>
+        <div class="comp-card reveal reveal-delay-2">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Difícil transmitir confianza</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">Imagen profesional desde el primer clic</p>
+        </div>
+        <div class="comp-card reveal reveal-delay-2">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Se pierden oportunidades de contacto</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">WhatsApp y formularios integrados</p>
+        </div>
+        <div class="comp-card reveal reveal-delay-3">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Cada vendedor explica lo mismo</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">El sitio responde las dudas frecuentes</p>
+        </div>
+        <div class="comp-card reveal reveal-delay-3">
+          <span class="comp-label comp-label-before">Antes</span>
+          <p class="comp-text-before">Presencia digital limitada</p>
+          <span class="comp-label comp-label-after">Después</span>
+          <p class="comp-text-after">Un negocio visible y mejor presentado</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="section-divider section-divider-to-surface">
+  <img src="https://images.pexels.com/photos/16246517/pexels-photo-16246517.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=1400" alt="" loading="lazy" style="object-position:center bottom">
+</div>
+
+<!-- PLANES -->
+<section id="planes" class="section planes-section">
+  <div class="planes-glow"></div>
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <h2>Elija el <span class="accent"></span>plan</span> que mejor se adapte a su negocio</h2>
+      <p class="section-desc" style="margin:.75rem auto 0;text-align:center">Cada día sin una página web profesional es una oportunidad más para que un cliente termine eligiendo a su competencia.</p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card reveal reveal-delay-1">
+        <span class="plan-name">Plan Esencial</span>
+        <div class="plan-price">USD 250</div>
+        <p class="plan-desc">Ideal para negocios que necesitan comenzar rápido su presencia digital.</p>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Landing profesional (una página)</li>
+          <li><span class="check">✓</span> Diseño responsive</li>
+          <li><span class="check">✓</span> Botón de WhatsApp</li>
+          <li><span class="check">✓</span> Formulario de contacto</li>
+          <li><span class="check">✓</span> Mapa (si aplica)</li>
+          <li><span class="check">✓</span> SEO On Page básico</li>
+          <li><span class="check">✓</span> Dominio y hosting incluidos</li>
+        </ul>
+        <p class="plan-time">≈ 5 días hábiles</p>
+        <button class="plan-btn plan-btn-white">Quiero este plan</button>
+      </div>
+      <div class="plan-card featured reveal reveal-delay-2">
+        <span class="plan-badge">Recomendado</span>
+        <span class="plan-name">Plan Profesional</span>
+        <div class="plan-price">USD 450</div>
+        <p class="plan-desc">Ideal para negocios que necesitan una presencia digital sólida.</p>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Hasta 5 secciones</li>
+          <li><span class="check">✓</span> Diseño responsive</li>
+          <li><span class="check">✓</span> Formularios y WhatsApp</li>
+          <li><span class="check">✓</span> SEO On Page básico</li>
+          <li><span class="check">✓</span> Perfil de empresa en Google</li>
+          <li><span class="check">✓</span> Dominio y hosting incluidos</li>
+          <li><span class="check">✓</span> Licencia waCRM (6 meses)</li>
+          <li><span class="check">✓</span> Páginas legales básicas</li>
+        </ul>
+        <p class="plan-time">≈ 15 días tras aprobar estructura y textos</p>
+        <button class="plan-btn plan-btn-accent">Quiero este plan</button>
+      </div>
+      <div class="plan-card reveal reveal-delay-3">
+        <span class="plan-name">Plan Empresarial</span>
+        <div class="plan-price">USD 800</div>
+        <p class="plan-desc">Pensado para empresas con varios servicios o líneas de negocio.</p>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Hasta 15 subpáginas</li>
+          <li><span class="check">✓</span> Diseño responsive</li>
+          <li><span class="check">✓</span> SEO estructural básico</li>
+          <li><span class="check">✓</span> Arquitectura preparada para crecer</li>
+          <li><span class="check">✓</span> Perfil de empresa en Google</li>
+          <li><span class="check">✓</span> Formularios y WhatsApp</li>
+          <li><span class="check">✓</span> Dominio y hosting incluidos</li>
+          <li><span class="check">✓</span> Licencia waCRM (1 año)</li>
+          <li><span class="check">✓</span> Páginas legales básicas</li>
+        </ul>
+        <p class="plan-time">≈ 30 días tras aprobar estructura y textos</p>
+        <button class="plan-btn plan-btn-white">Quiero este plan</button>
+      </div>
+    </div>
+    <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:2rem;max-width:56rem;text-align:center;margin-inline:auto">Forma de pago: 50% por adelantado para iniciar el proyecto y 50% al finalizar. Dominio y hosting incluidos el primer año. Página adicional: COP 150.000. No se prometen primeros lugares ni posicionamiento garantizado.</p>
+  </div>
+</section>
+
+<!-- IDEAL PARA - INDUSTRIES -->
+
+<!-- WACRM -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label reveal"><span></span> WhatsApp CRM</div>
+    <h2 class="reveal">Control de contactos en <span class="accent"></span>WhatsApp</span></h2>
+    <p class="section-desc reveal">Organice sus conversaciones comerciales directamente desde WhatsApp con waCRM.</p>
+    <div class="wacrm-cards">
+      <div class="wacrm-card reveal reveal-delay-1">
+        <span class="tag-inline">Plan Profesional</span>
+        <h4>Licencia waCRM · 6 meses</h4>
+        <p>Acceso a una licencia de waCRM durante 6 meses para organizar mejor las conversaciones con sus clientes en WhatsApp.</p>
+      </div>
+      <div class="wacrm-card reveal reveal-delay-2">
+        <span class="tag-inline">Plan Empresarial</span>
+        <h4>Licencia waCRM · 1 año</h4>
+        <p>Acceso a una licencia de waCRM durante 1 año para gestionar contactos y oportunidades comerciales desde WhatsApp.</p>
+      </div>
+    </div>
+    <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:1.25rem">Usted decide si continúa o no con la herramienta después de ese período. El acceso no incluye soporte, configuración ni implementación por parte de LocalRank.</p>
+  </div>
+</section>
+
+<!-- QUE INCLUYE -->
+<section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="section-label reveal"><span></span> Incluido</div>
+    <h2 class="reveal">Qué <span class="accent"></span>incluye</span> cada página web</h2>
+    <p class="section-desc reveal">Todo lo necesario para que su negocio tenga presencia digital profesional desde el día uno.</p>
+    <div class="includes-grid">
+      <div class="include-block reveal reveal-delay-1">
+        <h4><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg> Estructura del sitio</h4>
+        <ul>
+          <li>Inicio</li>
+          <li>Nosotros</li>
+          <li>Servicios</li>
+          <li>Testimonios</li>
+          <li>Ubicación</li>
+          <li>Contacto</li>
+          <li>WhatsApp</li>
+          <li>Diseño adaptable a móviles</li>
+        </ul>
+      </div>
+      <div class="include-block reveal reveal-delay-2">
+        <h4><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Tecnología y optimización</h4>
+        <ul>
+          <li>Certificado SSL activo</li>
+          <li>Hosting incluido el primer año</li>
+          <li>Optimización de velocidad básica</li>
+          <li>Indexado en Google</li>
+          <li>Arquitectura SEO On Page estándar</li>
+        </ul>
+      </div>
+      <div class="include-block reveal reveal-delay-3">
+        <h4><svg viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg> Integraciones</h4>
+        <ul>
+          <li>Botones sociales</li>
+          <li>Burbuja de chat de WhatsApp</li>
+          <li>Google Maps incrustado (si aplica)</li>
+          <li>Formulario de contacto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IDEAL PARA - INDUSTRIES -->
+<section class="section industries-section">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="reveal">Ideal para <span class="accent"></span>negocios</span> como el suyo</h2>
+    <div class="industries-grid reveal reveal-delay-1">
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+        <span>Restaurantes</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <span>Clínicas</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <span>Odontólogos</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.96-1.45 2.344-2.5"/><path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75z"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444c0-1.061-.162-2.2-.493-3.309m-9.243-6.082A8.801 8.801 0 0 1 12 5c.78 0 1.5.108 2.161.306"/></svg></div>
+        <span>Veterinarias</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <span>Abogados</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <span>Ferreterías</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <span>Talleres</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <span>Constructoras</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+        <span>Inmobiliarias</span>
+      </div>
+      <div class="industry-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
+        <span>Empresas de servicios</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE ELEGIRNOS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="ventajas-section">
+      <div>
+        <div class="section-label reveal"><span></span> Diferencial</div>
+        <h2 class="reveal">Por qué elegir <span class="accent"></span>LocalRank</span></h2>
+        <p class="section-desc reveal">Nos especializamos en crear páginas web para negocios locales que necesitan transmitir confianza, mostrar mejor sus servicios y facilitar el contacto con nuevos clientes.</p>
+        <p class="reveal" style="color:var(--text-muted);font-size:.85rem;margin-top:.75rem;line-height:1.6">Hemos trabajado con negocios locales de distintos sectores que necesitaban pasar de depender solo de redes sociales a tener una presencia web clara y profesional. El patrón se repite: más confianza, menos dudas y un canal de contacto mejor organizado.</p>
+        <div class="ventajas-grid reveal reveal-delay-1" style="margin-top:1.5rem">
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Diseño profesional y moderno</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Optimización para celulares</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Integración con WhatsApp</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>SEO On Page básico</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Hosting y dominio gestionados</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Proceso organizado y transparente</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Tiempos de entrega definidos</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Soporte posterior por horas</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Sin costos ocultos</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>Cada sitio se diseña a partir de su negocio</span></div>
+          <div class="ventaja"><span class="ventaja-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>No usamos plantillas genéricas sin contexto</span></div>
+        </div>
+      </div>
+      <div class="ventajas-visual reveal-scale">
+        <img src="https://statics.pancake.vn/web-media-263/d2/b3/fb/1c/df3fc9c54404a74e21858a705b3ab4f5cb05048715bb0249a3c4ef6f.png" alt="Red de conexiones LocalRank" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOCKUP PREVIEW -->
+<section class="section mockup-section">
+  <div class="section-inner">
+    <h2 class="reveal" style="text-align:center">Así puede verse su <span class="accent">nueva página web</span></h2>
+    <p class="section-desc reveal" style="text-align:center;margin:.75rem auto 0">Diseño moderno y profesional, navegación clara, botón de WhatsApp siempre visible, formularios de contacto, optimizada para celulares.</p>
+    <div class="mockup-browser reveal-scale">
+      <div class="mockup-toolbar">
+        <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+        <span class="mockup-url">sunegocio.com</span>
+      </div>
+      <div class="mockup-body">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(255,255,255,.02),rgba(249,168,212,.02));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem">
+          <svg style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          <span style="color:var(--text-muted);font-size:.75rem">Espacio reservado para captura de proyecto real</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+
+<!-- SERVICIOS COMPLEMENTARIOS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label reveal"><span></span> Adicional</div>
+    <h2 class="reveal">Servicios complementarios</h2>
+    <p class="section-desc reveal">No incluidos en los planes, se cotizan según el requerimiento.</p>
+    <div class="services-extra">
+      <div class="service-extra-card reveal reveal-delay-1">
+        <h4><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> SEO Local avanzado</h4>
+        <p>Posicionamiento orgánico enfocado en su zona geográfica.</p>
+      </div>
+      <div class="service-extra-card reveal reveal-delay-1">
+        <h4><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Perfil de Google avanzado</h4>
+        <p>Optimización avanzada de perfil de empresa en Google.</p>
+      </div>
+      <div class="service-extra-card reveal reveal-delay-2">
+        <h4><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> IA en buscadores</h4>
+        <p>Posicionamiento en buscadores de inteligencia artificial.</p>
+      </div>
+      <div class="service-extra-card reveal reveal-delay-2">
+        <h4><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg> Google Ads y Meta</h4>
+        <p>Campañas de tráfico pago en Google y redes sociales.</p>
+      </div>
+      <div class="service-extra-card reveal reveal-delay-3">
+        <h4><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Automatizaciones</h4>
+        <p>Automatizaciones de atención y ventas para su negocio.</p>
+      </div>
+      <div class="service-extra-card reveal reveal-delay-3">
+        <h4><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Mantenimiento mensual</h4>
+        <p>Soporte extendido, actualizaciones y monitoreo continuo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section">
+  <div class="section-inner faq-section">
+    <h2 class="reveal" style="text-align:center;margin-bottom:2rem">Preguntas <span class="accent"></span>frecuentes</span></h2>
+    <div style="max-width:44rem;width:100%" class="reveal reveal-delay-1">
+      <details open><summary>¿Qué necesito para empezar? <span class="faq-icon">+</span></summary><p>Solo debe completar un breve formulario con la información de su negocio. Nosotros nos encargamos del resto del proceso.</p></details>
+      <details><summary>¿Necesito conocimientos técnicos? <span class="faq-icon">+</span></summary><p>No, nos encargamos de todo el proceso técnico.</p></details>
+      <details><summary>¿Debo entregar todos los textos? <span class="faq-icon">+</span></summary><p>No necesariamente, ayudamos a redactar el contenido.</p></details>
+      <details><summary>¿Incluye dominio y hosting? <span class="faq-icon">+</span></summary><p>Sí, en los 3 planes, durante el primer año. Nosotros instalamos y configuramos todo.</p></details>
+      <details><summary>¿Incluye textos legales redactados por un abogado? <span class="faq-icon">+</span></summary><p>No. Incluimos la maquetación de las páginas legales usando los textos que usted proporcione o plantillas genéricas.</p></details>
+      <details><summary>¿Incluye soporte para waCRM? <span class="faq-icon">+</span></summary><p>El acceso a la licencia solo cubre el uso de la herramienta durante el período indicado. No incluye soporte ni implementación por parte de LocalRank.</p></details>
+      <details><summary>¿Qué pasa después del primer año? <span class="faq-icon">+</span></summary><p>Le avisamos con tiempo para que decida si quiere renovar, cambiar de proveedor o que le ayudemos con la migración. No cobramos recargos ocultos.</p></details>
+      <details><summary>¿Puedo pedir cambios después? <span class="faq-icon">+</span></summary><p>Sí, mediante bolsa de horas.</p></details>
+      <details><summary>¿Cuánto tarda el proyecto? <span class="faq-icon">+</span></summary><p>Esencial: ≈ 5 días. Profesional: ≈ 15 días. Empresarial: ≈ 30 días.</p></details>
+      <details><summary>¿Una página web garantiza más clientes? <span class="faq-icon">+</span></summary><p>No se garantizan resultados, pero aumenta la confianza y facilita el contacto.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="section cta-final">
+  <div class="section-inner reveal">
+    <h2>Empiece hoy a mostrar su negocio con la <span class="accent">confianza</span> que merece.</h2>
+    <p class="desc">No espere a que sus clientes encuentren primero a otro negocio.</p>
+    <div class="cta-buttons">
+      <a href="#planes" class="btn-primary" style="padding:.8rem 2rem">Quiero mi página web</a>
+      <a href="#planes" class="btn-outline" style="padding:.8rem 2rem">Empezar mi proyecto</a>
+    </div>
+    <p class="cta-sub">Atención personalizada · Respuesta rápida · Sin costos ocultos</p>
+    <p class="cta-sub2">Le respondemos en menos de un día hábil y le explicamos todo el proceso antes de que tome cualquier decisión.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-img">
+    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2810%29-UnDKstODkIENp5xqTYUEpt0Sm8tNOw.png" alt="" style="object-position:center bottom">
+    <div class="overlay1"></div>
+    <div class="overlay2"></div>
+  </div>
+  <div style="padding:0 2rem;max-width:1200px;margin:0 auto">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Local<span>Rank</span></a>
+        <p>Diseño web profesional para negocios locales que quieren más clientes.</p>
+        <div class="footer-links"><a href="#">WhatsApp</a><a href="#">Correo</a></div>
+      </div>
+      <div class="footer-col"><h3>Planes</h3><ul><li><a href="#planes">Página Esencial</a></li><li><a href="#planes">Página Profesional</a></li><li><a href="#planes">Página Empresarial</a></li></ul></div>
+      <div class="footer-col"><h3>Proceso</h3><ul><li><a href="#como-trabajamos">Brief inicial</a></li><li><a href="#como-trabajamos">Diseño y desarrollo</a></li><li><a href="#como-trabajamos">Publicación</a></li></ul></div>
+      <div class="footer-col"><h3>Servicios</h3><ul><li>SEO Local avanzado</li><li>Google Ads y Meta</li><li>Automatizaciones</li><li>Mantenimiento mensual</li></ul></div>
+      <div class="footer-col"><h3>Legal</h3><ul><li><a href="#">Aviso legal</a></li><li><a href="#">Política de privacidad</a></li><li><a href="#">Términos y condiciones</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 LocalRank. Todos los derechos reservados.</p>
+      <div class="footer-status"><span></span> Tiempo de respuesta: mismo día hábil</div>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="#" class="wa-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.574-1.47A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.587-5.932-1.61l-.425-.253-2.715.873.862-2.638-.278-.44A9.77 9.77 0 012.182 12c0-5.423 4.395-9.818 9.818-9.818 5.423 0 9.818 4.395 9.818 9.818 0 5.423-4.395 9.818-9.818 9.818z"/></svg>
+</a>
+
+<!-- SCRIPTS -->
+<script>
+// Particles
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.classList.add('particle');
+    p.style.left=Math.random()*100+'%';
+    p.style.top=(50+Math.random()*50)+'%';
+    p.style.animationDuration=(10+Math.random()*15)+'s';
+    p.style.animationDelay=Math.random()*10+'s';
+    p.style.width=p.style.height=(1+Math.random()*1.5)+'px';
+    c.appendChild(p);
+  }
+})();
+
+// Scroll Reveal with stagger
+(function(){
+  const els=document.querySelectorAll('.reveal,.reveal-scale');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+})();
+
+// Header shrink
+(function(){
+  const h=document.querySelector('.header');
+  let t=false;
+  window.addEventListener('scroll',()=>{
+    if(!t){window.requestAnimationFrame(()=>{h.classList.toggle('scrolled',window.scrollY>60);t=false});t=true}
+  });
+})();
+
+// Smooth counter animation for stats
+(function(){
+  const stats=document.querySelectorAll('.stat-val');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.animation='countUp .6s ease-out forwards';
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.5});
+  stats.forEach(s=>obs.observe(s));
+})();
+</script>
 </body>
 </html>
