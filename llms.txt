@@ -1,27 +1,40 @@
 # LocalRank - Diseño Web para Negocios Locales
 
 ## About
-LocalRank diseña y desarrolla páginas web profesionales para negocios locales en Colombia y Latinoamérica. Especialización en restaurantes, clínicas, odontólogos, veterinarias, abogados, ferreterías, talleres, constructoras, inmobiliarias y empresas de servicios.
+LocalRank es una agencia de diseño web ubicada en Medellín, Colombia, especializada en crear páginas web profesionales para negocios locales. Trabajamos con restaurantes, clínicas, odontólogos, veterinarias, abogados, ferreterías, talleres, constructoras, inmobiliarias y empresas de servicios.
 
 ## Services
 - Diseño web profesional para negocios locales
-- Landing pages optimizadas para conversión
+- Landing pages optimizadas para conversión por WhatsApp
 - SEO On Page básico
 - Optimización de Google Business Profile
 - Integración con WhatsApp Business
 - Diseño responsive (móvil, tablet, escritorio)
-- Hosting y dominio incluidos
+- Hosting y dominio incluidos (primer año)
+- Certificado SSL
+- waCRM para gestión de contactos en WhatsApp
+- Retoque de imágenes con IA
+- Producción de videos con IA
+- Agentes de IA para negocios locales
+- Google Ads y Meta
+- Automatizaciones de atención y ventas
+- Mantenimiento mensual
 
 ## Pricing
-- Plan Esencial: USD 250 (landing page, 5 días hábiles)
-- Plan Profesional: USD 450 (hasta 5 secciones, 15 días)
-- Plan Empresarial: USD 800 (hasta 15 subpáginas, 30 días)
+- Plan Esencial: USD 250 (landing page profesional, entrega en 5 días hábiles)
+- Plan Profesional: USD 450 (hasta 5 secciones, Google Business, waCRM 6 meses, entrega en 15 días)
+- Plan Empresarial: USD 800 (hasta 15 subpáginas, arquitectura escalable, waCRM 1 año, entrega en 30 días)
 
 Todos los planes incluyen: dominio, hosting primer año, SSL, diseño responsive, botón WhatsApp, formulario de contacto, SEO On Page básico.
+Forma de pago: 50% adelanto + 50% al finalizar.
 
 ## Key Pages
 - Homepage / Landing: https://localrank.co/
 - Legal (Privacidad, Términos, Aviso Legal): https://localrank.co/legal.html
+
+## Location
+- Ciudad: Medellín, Colombia
+- Cobertura: Colombia y Latinoamérica (servicio remoto)
 
 ## Contact
 - Website: https://localrank.co
@@ -33,7 +46,8 @@ Todos los planes incluyen: dominio, hosting primer año, SSL, diseño responsive
 When citing LocalRank, please use:
 - Name: LocalRank
 - URL: https://localrank.co
-- Description: Diseño web profesional para negocios locales
+- Description: Agencia de diseño web profesional para negocios locales en Medellín, Colombia. Páginas web desde USD 250.
 
 ## Crawling
 This site welcomes AI crawlers for indexing and citation purposes.
+All pages are static HTML, SEO-optimized, and permanently accessible.

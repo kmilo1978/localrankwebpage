@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://localrank.co/</loc>
     <lastmod>2025-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://statics.pancake.vn/web-media-263/98/37/f6/f5/6683269e9bdd5d0d69877a209af61eeac0558a99abef5da73dead3cc.jpg</image:loc>
+      <image:title>LocalRank - Diseño web para negocios locales</image:title>
+      <image:caption>Logo de LocalRank, agencia de diseño web profesional para negocios locales en Colombia</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://localrank.co/legal.html</loc>

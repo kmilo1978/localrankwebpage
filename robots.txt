@@ -1,8 +1,11 @@
 User-agent: *
 Allow: /
+Allow: /legal.html
+Disallow: /.git/
+
 Sitemap: https://localrank.co/sitemap.xml
 
-# AI Crawlers
+# AI Crawlers - Allowed
 User-agent: GPTBot
 Allow: /
 
@@ -15,5 +18,8 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Block unnecessary paths
-Disallow: /.git/
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
