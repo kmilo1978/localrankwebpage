@@ -479,7 +479,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 /* RESPONSIVE */
 @media(max-width:1024px){.beneficios-grid{grid-template-columns:repeat(2,1fr)}.cards-grid,.plans-grid{grid-template-columns:repeat(2,1fr)}.proceso-header,.ventajas-section{grid-template-columns:1fr}.includes-grid,.services-extra{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.nav{display:none}.header-cta{display:none}.hamburger{display:flex}.hero-content{padding:6rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:1.5rem}.section{padding:3rem 1.5rem}.beneficios-grid,.cards-grid,.plans-grid,.ventajas-grid,.includes-grid,.wacrm-cards,.services-extra{grid-template-columns:1fr}.comp-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.ventajas-section{gap:2rem}.mockup-browser{margin:1.5rem auto 0}.hero-reviews{flex-direction:column}}
+@media(max-width:768px){.nav{display:none}.header-cta{display:none}.hamburger{display:flex}.hero-content{padding:6rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:1.5rem}.section{padding:3rem 1.5rem}.beneficios-grid,.cards-grid,.plans-grid,.ventajas-grid,.includes-grid,.wacrm-cards,.services-extra{grid-template-columns:1fr}.comp-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.ventajas-section{gap:2rem}.mockup-browser{margin:1.5rem auto 0}.hero-reviews{flex-direction:column}.section-inner[style*="grid-template-columns"]{display:block !important}}
 </style>
 </head>
 <body>
@@ -725,7 +725,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
           <li><span class="check">✓</span> Dominio y hosting incluidos</li>
         </ul>
         <p class="plan-time">≈ 5 días hábiles</p>
-        <button class="plan-btn plan-btn-white">Quiero este plan</button>
+        <a href="https://wa.me/573165212839?text=Hola%2C%20estoy%20interesado%20en%20el%20*Plan%20Esencial%20(USD%20250)*%20para%20mi%20negocio.%20%C2%BFMe%20pueden%20dar%20m%C3%A1s%20informaci%C3%B3n%3F" class="plan-btn plan-btn-white" target="_blank" rel="noopener">Quiero este plan</a>
       </div>
       <div class="plan-card featured reveal reveal-delay-2">
         <span class="plan-badge">Recomendado</span>
@@ -743,7 +743,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
           <li><span class="check">✓</span> Páginas legales básicas</li>
         </ul>
         <p class="plan-time">≈ 15 días tras aprobar estructura y textos</p>
-        <button class="plan-btn plan-btn-accent">Quiero este plan</button>
+        <a href="https://wa.me/573165212839?text=Hola%2C%20estoy%20interesado%20en%20el%20*Plan%20Profesional%20(USD%20450)*%20para%20mi%20negocio.%20%C2%BFMe%20pueden%20dar%20m%C3%A1s%20informaci%C3%B3n%3F" class="plan-btn plan-btn-accent" target="_blank" rel="noopener">Quiero este plan</a>
       </div>
       <div class="plan-card reveal reveal-delay-3">
         <span class="plan-name">Plan Empresarial</span>
@@ -761,7 +761,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
           <li><span class="check">✓</span> Páginas legales básicas</li>
         </ul>
         <p class="plan-time">≈ 30 días tras aprobar estructura y textos</p>
-        <button class="plan-btn plan-btn-white">Quiero este plan</button>
+        <a href="https://wa.me/573165212839?text=Hola%2C%20estoy%20interesado%20en%20el%20*Plan%20Empresarial%20(USD%20800)*%20para%20mi%20negocio.%20%C2%BFMe%20pueden%20dar%20m%C3%A1s%20informaci%C3%B3n%3F" class="plan-btn plan-btn-white" target="_blank" rel="noopener">Quiero este plan</a>
       </div>
     </div>
     <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:2rem;max-width:56rem;text-align:center;margin-inline:auto">Forma de pago: 50% por adelantado para iniciar el proyecto y 50% al finalizar. Dominio y hosting incluidos el primer año. Página adicional: COP 150.000. No se prometen primeros lugares ni posicionamiento garantizado.</p>
@@ -852,23 +852,28 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- WACRM -->
 <section class="section section-bg-decor">
-  <div class="section-inner">
-    <div class="section-label reveal"><span></span> WhatsApp CRM</div>
-    <h2 class="reveal">Control de contactos en <span class="accent">WhatsApp</span></h2>
-    <p class="section-desc reveal">Organice sus conversaciones comerciales directamente desde WhatsApp con waCRM.</p>
-    <div class="wacrm-cards">
-      <div class="wacrm-card reveal reveal-delay-1">
-        <span class="tag-inline">Plan Profesional</span>
-        <h4>Licencia waCRM · 6 meses</h4>
-        <p>Acceso a una licencia de waCRM durante 6 meses para organizar mejor las conversaciones con sus clientes en WhatsApp.</p>
+  <div class="section-inner" style="display:grid;grid-template-columns:1.2fr 1fr;gap:2.5rem;align-items:center">
+    <div>
+      <div class="section-label reveal"><span></span> WhatsApp CRM</div>
+      <h2 class="reveal">Control de contactos en <span class="accent">WhatsApp</span></h2>
+      <p class="section-desc reveal">Organice sus conversaciones comerciales directamente desde WhatsApp con waCRM.</p>
+      <div class="wacrm-cards" style="margin-top:1.5rem">
+        <div class="wacrm-card reveal reveal-delay-1">
+          <span class="tag-inline">Plan Profesional</span>
+          <h4>Licencia waCRM · 6 meses</h4>
+          <p>Acceso a una licencia de waCRM durante 6 meses para organizar mejor las conversaciones con sus clientes en WhatsApp.</p>
+        </div>
+        <div class="wacrm-card reveal reveal-delay-2">
+          <span class="tag-inline">Plan Empresarial</span>
+          <h4>Licencia waCRM · 1 año</h4>
+          <p>Acceso a una licencia de waCRM durante 1 año para gestionar contactos y oportunidades comerciales desde WhatsApp.</p>
+        </div>
       </div>
-      <div class="wacrm-card reveal reveal-delay-2">
-        <span class="tag-inline">Plan Empresarial</span>
-        <h4>Licencia waCRM · 1 año</h4>
-        <p>Acceso a una licencia de waCRM durante 1 año para gestionar contactos y oportunidades comerciales desde WhatsApp.</p>
-      </div>
+      <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:1.25rem">Usted decide si continúa o no con la herramienta después de ese período. El acceso no incluye soporte, configuración ni implementación por parte de LocalRank.</p>
     </div>
-    <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:1.25rem">Usted decide si continúa o no con la herramienta después de ese período. El acceso no incluye soporte, configuración ni implementación por parte de LocalRank.</p>
+    <div class="ventajas-visual reveal-scale" style="border:none;background:transparent">
+      <img src="https://statics.pancake.vn/web-media-263/d6/40/82/d0/ffba8d64cae55872251055c48356caeaa9e4d2c7999eead7c7f09020.jpg" alt="Árbol de conexiones digitales LocalRank" loading="lazy" width="400" height="400">
+    </div>
   </div>
 </section>
 
@@ -1082,7 +1087,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       <div class="footer-col"><h3>Planes</h3><ul><li><a href="#planes">Página Esencial</a></li><li><a href="#planes">Página Profesional</a></li><li><a href="#planes">Página Empresarial</a></li></ul></div>
       <div class="footer-col"><h3>Proceso</h3><ul><li><a href="#como-trabajamos">Brief inicial</a></li><li><a href="#como-trabajamos">Diseño y desarrollo</a></li><li><a href="#como-trabajamos">Publicación</a></li></ul></div>
       <div class="footer-col"><h3>Servicios</h3><ul><li>SEO Local avanzado</li><li>Google Ads y Meta</li><li>Automatizaciones</li><li>Mantenimiento mensual</li></ul></div>
-      <div class="footer-col"><h3>Legal</h3><ul><li><a href="#">Aviso legal</a></li><li><a href="#">Política de privacidad</a></li><li><a href="#">Términos y condiciones</a></li></ul></div>
+      <div class="footer-col"><h3>Legal</h3><ul><li><a href="legal.html#aviso-legal">Aviso legal</a></li><li><a href="legal.html#politica-privacidad">Política de privacidad</a></li><li><a href="legal.html#terminos-condiciones">Términos y condiciones</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <p>© 2025 LocalRank. Todos los derechos reservados.</p>
