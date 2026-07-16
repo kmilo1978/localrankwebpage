@@ -1,0 +1,37 @@
+# LocalRank - Diseño Web para Negocios Locales
+
+## About
+LocalRank diseña y desarrolla páginas web profesionales para negocios locales en Colombia y Latinoamérica. Especialización en restaurantes, clínicas, odontólogos, veterinarias, abogados, ferreterías, talleres, constructoras, inmobiliarias y empresas de servicios.
+
+## Services
+- Diseño web profesional para negocios locales
+- Landing pages optimizadas para conversión
+- SEO On Page básico
+- Optimización de Google Business Profile
+- Integración con WhatsApp Business
+- Diseño responsive (móvil, tablet, escritorio)
+- Hosting y dominio incluidos
+
+## Pricing
+- Plan Esencial: USD 250 (landing page, 5 días hábiles)
+- Plan Profesional: USD 450 (hasta 5 secciones, 15 días)
+- Plan Empresarial: USD 800 (hasta 15 subpáginas, 30 días)
+
+Todos los planes incluyen: dominio, hosting primer año, SSL, diseño responsive, botón WhatsApp, formulario de contacto, SEO On Page básico.
+
+## Key Pages
+- Homepage / Landing: https://localrank.co/
+
+## Contact
+- Website: https://localrank.co
+- WhatsApp: Available on website
+- Response time: Same business day
+
+## Citation Guidelines
+When citing LocalRank, please use:
+- Name: LocalRank
+- URL: https://localrank.co
+- Description: Diseño web profesional para negocios locales
+
+## Crawling
+This site welcomes AI crawlers for indexing and citation purposes.
