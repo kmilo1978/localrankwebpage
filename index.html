@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050505">
 
 <!-- SEO PRIMARY -->
 <title>Diseño Web para Negocios Locales desde USD 250 | LocalRank</title>
@@ -35,7 +36,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://statics.pancake.vn">
 <link rel="dns-prefetch" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <!-- SCHEMA.ORG - LocalBusiness Service -->
 <script type="application/ld+json">
@@ -132,7 +134,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--accent:#f9a8d4;--accent-glow:rgba(249,168,212,.15);--dark:#050505;--surface:#0a0a0f;--border:rgba(255,255,255,.08);--text:rgba(255,255,255,.7);--text-muted:rgba(255,255,255,.4)}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--dark);color:#e8e8e8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 a{text-decoration:none;color:inherit}ul{list-style:none}img,video{display:block;max-width:100%}
 
 /* ANIMATIONS */
@@ -199,7 +200,7 @@ a{text-decoration:none;color:inherit}ul{list-style:none}img,video{display:block;
 .stat-val{color:#fff;font-size:clamp(1.6rem,2.5vw,2rem);font-weight:700;transition:color .3s}.stat:hover .stat-val{color:var(--accent)}.stat-label{color:var(--text-muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}
 
 /* SECTIONS */
-.section{padding:4rem 2rem;position:relative}.section-inner{max-width:1200px;margin:0 auto;position:relative}
+.section{padding:4rem 2rem;position:relative;content-visibility:auto;contain-intrinsic-size:auto 500px}.section-inner{max-width:1200px;margin:0 auto;position:relative}
 .section-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;color:var(--accent);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
 .section-label span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
 h2{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:600;color:#fff;line-height:1.2;letter-spacing:-.02em}
@@ -401,10 +402,6 @@ details p{color:var(--text);font-size:.85rem;padding:0 1rem 1.25rem;line-height:
 details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 .footer-links a{position:relative}.footer-links a::after{content:'';position:absolute;bottom:-.15rem;left:0;width:0;height:1px;background:var(--accent);transition:width .3s ease}.footer-links a:hover::after{width:100%}
 
-/* CUSTOM CURSOR GLOW */
-.cursor-glow{position:fixed;width:18px;height:18px;background:radial-gradient(circle,rgba(249,168,212,.25),transparent 70%);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s,width .4s,height .4s;mix-blend-mode:screen}
-.cursor-glow.active{opacity:1;width:50px;height:50px}
-
 /* STAGGER CHILDREN */
 .stagger-children > *{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
 .stagger-children.visible > *:nth-child(1){transition-delay:.03s}
@@ -466,7 +463,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 .service-extra-card p{color:var(--text-muted);font-size:.7rem;line-height:1.5}
 
 /* HAMBURGER MENU */
-.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;z-index:60}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;z-index:60;background:none;border:none}
 .hamburger span{display:block;width:20px;height:2px;background:#fff;border-radius:2px;transition:all .3s ease}
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
 .hamburger.open span:nth-child(2){opacity:0}
@@ -489,7 +486,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
-    <a href="#" class="logo"><img src="https://statics.pancake.vn/web-media-263/98/37/f6/f5/6683269e9bdd5d0d69877a209af61eeac0558a99abef5da73dead3cc.jpg" alt="LocalRank - Diseño web para negocios locales en Colombia" style="height:34px"></a>
+    <a href="#" class="logo"><img src="https://statics.pancake.vn/web-media-263/98/37/f6/f5/6683269e9bdd5d0d69877a209af61eeac0558a99abef5da73dead3cc.jpg" alt="LocalRank - Diseño web para negocios locales en Colombia" style="height:34px" fetchpriority="high"></a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="#beneficios">Beneficios</a>
       <a href="#como-trabajamos">Proceso</a>
@@ -500,9 +497,9 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       <a href="#planes" style="font-size:.8rem;color:var(--text)">Ver planes</a>
       <a href="https://wa.me/573165212839?text=Hola%2C%20quiero%20mi%20p%C3%A1gina%20web%20profesional" class="btn-primary" target="_blank" rel="noopener">Quiero mi página web</a>
     </div>
-    <div class="hamburger" id="hamburger" aria-label="Menú">
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación" aria-expanded="false" type="button">
       <span></span><span></span><span></span>
-    </div>
+    </button>
   </div>
 </header>
 
@@ -521,7 +518,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video">
-    <video autoplay muted loop playsinline>
+    <video autoplay muted loop playsinline preload="none" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect fill='%23000'/%3E%3C/svg%3E">
       <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay1"></div>
@@ -545,7 +542,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       </div>
     </div>
     <div class="hero-social-proof">
-      <img src="https://statics.pancake.vn/web-media-263/ec/70/8e/6f/1716c4391e86734d3ced641ec14bf7874ec9a0087dca310123059118.png" alt="Más de 50 dueños de negocios locales confían en LocalRank para su diseño web" style="height:36px;border-radius:9999px">
+      <img src="https://statics.pancake.vn/web-media-263/ec/70/8e/6f/1716c4391e86734d3ced641ec14bf7874ec9a0087dca310123059118.png" alt="Más de 50 dueños de negocios locales confían en LocalRank para su diseño web" style="height:36px;border-radius:9999px" width="252" height="36">
       <p><strong>+50 dueños</strong> de negocios locales ya confían en nosotros</p>
     </div>
     <div class="hero-badge"><span></span> Desde USD 250 · Entrega desde 5 días hábiles · Hosting y dominio incluidos</div>
@@ -565,7 +562,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- DIVIDER -->
 <div class="section-divider">
-  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Diseño web creativo y profesional para negocios locales - LocalRank Colombia" loading="lazy">
+  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Diseño web creativo y profesional para negocios locales - LocalRank Colombia" loading="lazy" decoding="async">
 </div>
 
 <!-- BENEFICIOS -->
@@ -624,7 +621,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
         <p class="sub">Una página web trabaja por su negocio incluso cuando usted está descansando.</p>
       </div>
       <div class="proceso-header-img reveal-scale">
-      <img src="https://statics.pancake.vn/web-media-263/04/b3/3b/37/30bdb39682e33905ab06578d141c84b46e739ac8b31bdda902393ce8.jpg" alt="Proceso de desarrollo web profesional - ecosistema digital LocalRank" loading="lazy" width="600" height="280">
+      <img src="https://statics.pancake.vn/web-media-263/04/b3/3b/37/30bdb39682e33905ab06578d141c84b46e739ac8b31bdda902393ce8.jpg" alt="Proceso de desarrollo web profesional - ecosistema digital LocalRank" loading="lazy" decoding="async" width="600" height="280">
       </div>
     </div>
     <div class="cards-grid">
@@ -701,7 +698,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- DIVIDER -->
 <div class="section-divider section-divider-to-surface">
-  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Desarrollo de páginas web optimizadas para negocios locales en Medellín" loading="lazy" style="object-position:center bottom">
+  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Desarrollo de páginas web optimizadas para negocios locales en Medellín" loading="lazy" decoding="async" style="object-position:center bottom">
 </div>
 
 <!-- PLANES -->
@@ -846,7 +843,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       </div>
     </div>
     <div class="reveal" style="margin-top:2rem;border-radius:1rem;overflow:hidden;border:1px solid var(--border);height:10rem;position:relative">
-      <img src="https://statics.pancake.vn/web-media-263/54/11/5d/5d/22a82014384a9e000eba395a8c231154503d6989248a603b749a6caa.jpg" alt="Código HTML CSS JavaScript para páginas web de negocios locales" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:.5">
+      <img src="https://statics.pancake.vn/web-media-263/54/11/5d/5d/22a82014384a9e000eba395a8c231154503d6989248a603b749a6caa.jpg" alt="Código HTML CSS JavaScript para páginas web de negocios locales" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;opacity:.5">
       <div style="position:absolute;inset:0;background:linear-gradient(to right,var(--surface),transparent 30%,transparent 70%,var(--surface))"></div>
     </div>
   </div>
@@ -874,7 +871,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       <p class="reveal" style="color:var(--text-muted);font-size:.75rem;margin-top:1.25rem">Usted decide si continúa o no con la herramienta después de ese período. El acceso no incluye soporte, configuración ni implementación por parte de LocalRank.</p>
     </div>
     <div class="ventajas-visual reveal-scale" style="border:none;background:#000">
-      <img src="https://statics.pancake.vn/web-media-263/d6/40/82/d0/ffba8d64cae55872251055c48356caeaa9e4d2c7999eead7c7f09020.jpg" alt="Control de contactos y conversaciones de WhatsApp para negocios con waCRM" loading="lazy" width="400" height="400">
+      <img src="https://statics.pancake.vn/web-media-263/d6/40/82/d0/ffba8d64cae55872251055c48356caeaa9e4d2c7999eead7c7f09020.jpg" alt="Control de contactos y conversaciones de WhatsApp para negocios con waCRM" loading="lazy" decoding="async" width="400" height="400">
     </div>
   </div>
 </section>
@@ -1013,7 +1010,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
         </div>
       </div>
       <div class="ventajas-visual reveal-scale">
-        <img src="https://statics.pancake.vn/web-media-263/67/8c/8a/30/36cbf70c69acf3a3c05a0a8220abe74a67e493a8225c08228f7226af.jpg" alt="Red de conexiones digitales - por qué elegir LocalRank para diseño web" loading="lazy" width="400" height="400">
+        <img src="https://statics.pancake.vn/web-media-263/67/8c/8a/30/36cbf70c69acf3a3c05a0a8220abe74a67e493a8225c08228f7226af.jpg" alt="Red de conexiones digitales - por qué elegir LocalRank para diseño web" loading="lazy" decoding="async" width="400" height="400">
       </div>
     </div>
   </div>
@@ -1174,21 +1171,6 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     });
   },{threshold:0.1});
   els.forEach(el=>obs.observe(el));
-})();
-
-// Cursor glow (desktop only)
-(function(){
-  if(window.matchMedia('(pointer:fine)').matches){
-    const glow=document.createElement('div');
-    glow.classList.add('cursor-glow');
-    document.body.appendChild(glow);
-    let mx=0,my=0,cx=0,cy=0,moving=false,raf=null;
-    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!moving){moving=true;loop()}});
-    const interactives='a,button,.card,.plan-card,.beneficio-card,.industry-item,.tag,.ventaja,.comp-card';
-    document.addEventListener('mouseover',e=>{if(e.target.closest(interactives))glow.classList.add('active')});
-    document.addEventListener('mouseout',e=>{if(e.target.closest(interactives))glow.classList.remove('active')});
-    function loop(){cx+=(mx-cx)*.12;cy+=(my-cy)*.12;glow.style.left=cx+'px';glow.style.top=cy+'px';if(Math.abs(mx-cx)>.5||Math.abs(my-cy)>.5){raf=requestAnimationFrame(loop)}else{moving=false}}
-  }
 })();
 
 // Smooth parallax on divider images
