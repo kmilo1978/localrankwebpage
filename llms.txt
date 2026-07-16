@@ -21,6 +21,7 @@ Todos los planes incluyen: dominio, hosting primer año, SSL, diseño responsive
 
 ## Key Pages
 - Homepage / Landing: https://localrank.co/
+- Legal (Privacidad, Términos, Aviso Legal): https://localrank.co/legal.html
 
 ## Contact
 - Website: https://localrank.co
