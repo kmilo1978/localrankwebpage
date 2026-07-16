@@ -33,7 +33,6 @@
 <link rel="apple-touch-icon" href="Favicon-local-rank.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.pexels.com">
 <link rel="preconnect" href="https://statics.pancake.vn">
 <link rel="dns-prefetch" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -566,7 +565,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- DIVIDER -->
 <div class="section-divider">
-  <img src="https://images.pexels.com/photos/16246517/pexels-photo-16246517.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=1400" alt="Diseño web creativo - LocalRank" loading="lazy">
+  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Diseño web creativo - LocalRank" loading="lazy">
 </div>
 
 <!-- BENEFICIOS -->
@@ -702,7 +701,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- DIVIDER -->
 <div class="section-divider section-divider-to-surface">
-  <img src="https://images.pexels.com/photos/16246517/pexels-photo-16246517.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=1400" alt="Desarrollo web profesional para negocios" loading="lazy" style="object-position:center bottom">
+  <img src="https://statics.pancake.vn/web-media-263/e8/53/bf/67/bcf72cc4630feab02568aa317c692b76973a34f63c3c03aa61bac6ed.jpg" alt="Desarrollo web profesional para negocios" loading="lazy" style="object-position:center bottom">
 </div>
 
 <!-- PLANES -->
@@ -847,7 +846,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       </div>
     </div>
     <div class="reveal" style="margin-top:2rem;border-radius:1rem;overflow:hidden;border:1px solid var(--border);height:10rem;position:relative">
-      <img src="https://images.pexels.com/photos/6424583/pexels-photo-6424583.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=1200" alt="Código profesional" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:.5">
+      <img src="https://statics.pancake.vn/web-media-263/54/11/5d/5d/22a82014384a9e000eba395a8c231154503d6989248a603b749a6caa.jpg" alt="Código profesional" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:.5">
       <div style="position:absolute;inset:0;background:linear-gradient(to right,var(--surface),transparent 30%,transparent 70%,var(--surface))"></div>
     </div>
   </div>
@@ -1183,12 +1182,12 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     const glow=document.createElement('div');
     glow.classList.add('cursor-glow');
     document.body.appendChild(glow);
-    let mx=0,my=0,cx=0,cy=0;
-    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+    let mx=0,my=0,cx=0,cy=0,moving=false,raf=null;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!moving){moving=true;loop()}});
     const interactives='a,button,.card,.plan-card,.beneficio-card,.industry-item,.tag,.ventaja,.comp-card';
     document.addEventListener('mouseover',e=>{if(e.target.closest(interactives))glow.classList.add('active')});
     document.addEventListener('mouseout',e=>{if(e.target.closest(interactives))glow.classList.remove('active')});
-    (function loop(){cx+=(mx-cx)*.12;cy+=(my-cy)*.12;glow.style.left=cx+'px';glow.style.top=cy+'px';requestAnimationFrame(loop)})();
+    function loop(){cx+=(mx-cx)*.12;cy+=(my-cy)*.12;glow.style.left=cx+'px';glow.style.top=cy+'px';if(Math.abs(mx-cx)>.5||Math.abs(my-cy)>.5){raf=requestAnimationFrame(loop)}else{moving=false}}
   }
 })();
 
