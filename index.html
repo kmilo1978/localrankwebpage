@@ -183,6 +183,14 @@ a{text-decoration:none;color:inherit}ul{list-style:none}img,video{display:block;
 .hero-review:hover{border-color:rgba(249,168,212,.2);background:rgba(255,255,255,.07)}
 .hero-review-stars{color:#f5a623;font-size:.8rem;margin-bottom:.35rem;letter-spacing:1px}
 .hero-review p{color:var(--text);font-size:.8rem;line-height:1.5}
+
+/* REVIEWS SECTION */
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.review-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;transition:all .35s;position:relative;overflow:hidden}
+.review-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.review-card:hover{border-color:rgba(249,168,212,.2);transform:translateY(-3px)}.review-card:hover::before{opacity:1}
+.review-stars{color:#f5a623;font-size:.8rem;margin-bottom:.5rem;letter-spacing:1px}
+.review-card p{color:var(--text);font-size:.85rem;line-height:1.6;font-style:italic}
 .hero-social-proof{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
 .hero-avatars{display:flex}
 .hero-avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--dark);margin-left:-8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--text-muted);overflow:hidden}
@@ -490,8 +498,8 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 .mobile-overlay.open{opacity:1;pointer-events:auto}
 
 /* RESPONSIVE */
-@media(max-width:1024px){.beneficios-grid{grid-template-columns:repeat(2,1fr)}.cards-grid,.plans-grid{grid-template-columns:repeat(2,1fr)}.proceso-header,.ventajas-section{grid-template-columns:1fr}.includes-grid,.services-extra{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.nav{display:none}.header-cta{display:none}.hamburger{display:flex}.hero-content{padding:6rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:1.5rem}.section{padding:3rem 1.5rem}.beneficios-grid,.cards-grid,.plans-grid,.ventajas-grid,.includes-grid,.wacrm-cards,.services-extra{grid-template-columns:1fr}.comp-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.ventajas-section{gap:2rem}.mockup-browser{margin:1.5rem auto 0}.hero-reviews{flex-direction:column}.section-inner[style*="grid-template-columns"]{display:block !important}}
+@media(max-width:1024px){.beneficios-grid{grid-template-columns:repeat(2,1fr)}.cards-grid,.plans-grid{grid-template-columns:repeat(2,1fr)}.proceso-header,.ventajas-section{grid-template-columns:1fr}.includes-grid,.services-extra{grid-template-columns:repeat(2,1fr)}.reviews-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.nav{display:none}.header-cta{display:none}.hamburger{display:flex}.hero-content{padding:6rem 1.5rem 2rem}.hero-stats{padding:0 1.5rem 2rem;gap:1.5rem}.section{padding:3rem 1.5rem}.beneficios-grid,.cards-grid,.plans-grid,.ventajas-grid,.includes-grid,.wacrm-cards,.services-extra,.reviews-grid{grid-template-columns:1fr}.comp-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.ventajas-section{gap:2rem}.mockup-browser{margin:1.5rem auto 0}.hero-reviews{flex-direction:column}.section-inner[style*="grid-template-columns"]{display:block !important}}
 </style>
 </head>
 <body>
@@ -540,20 +548,6 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   <div class="hero-grid"></div>
   <div class="hero-particles" id="particles"></div>
   <div class="hero-content">
-    <div class="hero-reviews">
-      <div class="hero-review">
-        <div class="hero-review-stars">★★★★★</div>
-        <p>Les confiamos el diseño de nuestra nueva web y fue la mejor decisión. ¡Cero estrés y quedó hermosa! 😍</p>
-      </div>
-      <div class="hero-review">
-        <div class="hero-review-stars">★★★★★</div>
-        <p>Desde que el equipo de Localrank nos entregó la landing page, las consultas no paran de llegar. 📈</p>
-      </div>
-      <div class="hero-review">
-        <div class="hero-review-stars">★★★★★</div>
-        <p>Entendieron exactamente lo que nuestro negocio necesitaba. Entrega súper rápida y resultado impecable. 👏🏼</p>
-      </div>
-    </div>
     <div class="hero-social-proof">
       <img src="https://statics.pancake.vn/web-media-263/ec/70/8e/6f/1716c4391e86734d3ced641ec14bf7874ec9a0087dca310123059118.png" alt="Más de 50 dueños de negocios locales confían en LocalRank para su diseño web" style="height:40px;width:auto;border-radius:9999px">
       <p><strong>+50 dueños</strong> de negocios locales ya confían en nosotros</p>
@@ -1058,6 +1052,40 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     <div class="video-carousel-nav">
       <button class="carousel-btn" id="carouselPrev" type="button" aria-label="Anterior">←</button>
       <button class="carousel-btn" id="carouselNext" type="button" aria-label="Siguiente">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-label reveal"><span></span> Testimonios</div>
+    <h2 class="reveal">Lo que dicen nuestros <span class="accent">clientes</span></h2>
+    <div class="reviews-grid">
+      <div class="review-card reveal reveal-delay-1">
+        <div class="review-stars">★★★★★</div>
+        <p>Les confiamos el diseño de nuestra nueva web y fue la mejor decisión. ¡Cero estrés y quedó hermosa! 😍</p>
+      </div>
+      <div class="review-card reveal reveal-delay-1">
+        <div class="review-stars">★★★★★</div>
+        <p>Desde que el equipo de Localrank nos entregó la landing page, las consultas no paran de llegar. ¡Súper recomendados! 📈</p>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="review-stars">★★★★★</div>
+        <p>Entendieron exactamente lo que nuestro negocio necesitaba. Entrega súper rápida y resultado impecable. 👏🏼</p>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="review-stars">★★★★★</div>
+        <p>El trabajo que hizo Localrank con nuestra página web está a otro nivel. El diseño y la velocidad son excelentes. ⚡</p>
+      </div>
+      <div class="review-card reveal reveal-delay-3">
+        <div class="review-stars">★★★★★</div>
+        <p>Excelente servicio de principio a fin. Nos hicieron una landing que realmente convierte visitas en clientes. ¡Gracias totales! 🙌🏼</p>
+      </div>
+      <div class="review-card reveal reveal-delay-3">
+        <div class="review-stars">★★★★★</div>
+        <p>Profesionales, rápidos y con muy buena comunicación. La página quedó exactamente como la imaginamos. 100% recomendados. 🔥</p>
+      </div>
     </div>
   </div>
 </section>
