@@ -354,6 +354,8 @@ details p{color:var(--text);font-size:.85rem;padding:0 1rem 1.25rem;line-height:
 .video-carousel-nav{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
 .carousel-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
 .carousel-btn:hover{border-color:var(--accent);color:var(--accent)}
+.carousel-progress{width:100%;max-width:300px;height:3px;background:var(--border);border-radius:9999px;margin:1rem auto 0;overflow:hidden;position:relative}
+.carousel-progress-bar{height:100%;background:var(--accent);border-radius:9999px;transition:width .2s ease;width:10%}
 
 /* GLOBAL SECTION GLOW (uniforme) */
 .section-glow{position:relative;overflow:hidden}
@@ -1034,6 +1036,7 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
       <button class="carousel-btn" id="carouselPrev" type="button" aria-label="Anterior">←</button>
       <button class="carousel-btn" id="carouselNext" type="button" aria-label="Siguiente">→</button>
     </div>
+    <div class="carousel-progress"><div class="carousel-progress-bar" id="carouselProgress"></div></div>
   </div>
 </section>
 
@@ -1270,10 +1273,18 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   const carousel=document.getElementById('videoCarousel');
   const prev=document.getElementById('carouselPrev');
   const next=document.getElementById('carouselNext');
+  const progress=document.getElementById('carouselProgress');
   if(!carousel||!prev||!next)return;
   const scrollAmount=340;
+  function updateProgress(){
+    const max=carousel.scrollWidth-carousel.clientWidth;
+    const pct=max>0?(carousel.scrollLeft/max)*100:0;
+    if(progress)progress.style.width=Math.max(10,pct)+'%';
+  }
   prev.addEventListener('click',()=>{carousel.scrollBy({left:-scrollAmount,behavior:'smooth'})});
   next.addEventListener('click',()=>{carousel.scrollBy({left:scrollAmount,behavior:'smooth'})});
+  carousel.addEventListener('scroll',updateProgress);
+  updateProgress();
 })();
 </script>
 </body>
