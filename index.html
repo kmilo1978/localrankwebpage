@@ -1150,8 +1150,8 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   const ctx=canvas.getContext('2d');
   const container=canvas.parentElement;
   let w,h,particles=[],mouse={x:-1000,y:-1000},raf;
-  const COUNT=80;
-  const COLORS=['rgba(249,168,212,','rgba(255,255,255,'];
+  const COUNT=150;
+  const COLORS=['rgba(249,168,212,','rgba(255,255,255,','rgba(249,168,212,'];
 
   function resize(){
     w=container.clientWidth;h=container.clientHeight;
@@ -1162,9 +1162,9 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   function createParticle(){
     return{
       x:Math.random()*w,y:Math.random()*h,
-      vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,
-      r:Math.random()*1.5+.5,
-      alpha:Math.random()*.4+.1,
+      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+      r:Math.random()*2.5+.8,
+      alpha:Math.random()*.5+.2,
       color:COLORS[Math.floor(Math.random()*COLORS.length)],
       phase:Math.random()*Math.PI*2
     };
@@ -1180,14 +1180,14 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     const t=performance.now()*.0003;
     particles.forEach(p=>{
       // Gentle organic movement
-      p.x+=p.vx+Math.sin(t+p.phase)*.08;
-      p.y+=p.vy+Math.cos(t+p.phase*.7)*.06;
+      p.x+=p.vx+Math.sin(t+p.phase)*.2;
+      p.y+=p.vy+Math.cos(t+p.phase*.7)*.15;
 
       // Mouse repulsion
       const dx=p.x-mouse.x,dy=p.y-mouse.y;
       const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<120){
-        const force=(120-dist)/120*.8;
+      if(dist<150){
+        const force=(150-dist)/150*1.2;
         p.x+=dx/dist*force;
         p.y+=dy/dist*force;
       }
