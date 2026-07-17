@@ -1143,12 +1143,13 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- SCRIPTS -->
 <script>
-// Canvas Particles (global)
+// Canvas Particles (global) - denser near images
 (function(){
   const canvas=document.getElementById('particles');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
   let w,h,particles=[],mouse={x:-1000,y:-1000},raf;
+  let imageZones=[];
   const COUNT=160;
   const COLORS=['rgba(249,168,212,','rgba(255,255,255,','rgba(249,168,212,'];
 
@@ -1158,12 +1159,24 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     ctx.scale(devicePixelRatio,devicePixelRatio);
   }
 
+  function updateImageZones(){
+    imageZones=[];
+    const imgs=document.querySelectorAll('.proceso-header-img,.ventajas-visual,.section-divider,.footer-img');
+    imgs.forEach(el=>{
+      const rect=el.getBoundingClientRect();
+      if(rect.bottom>0&&rect.top<h){
+        imageZones.push({cx:rect.left+rect.width/2,cy:rect.top+rect.height/2,radius:Math.max(rect.width,rect.height)*.6});
+      }
+    });
+  }
+
   function createParticle(){
     return{
       x:Math.random()*w,y:Math.random()*h,
       vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
       r:Math.random()*2+.5,
-      alpha:Math.random()*.35+.1,
+      baseAlpha:Math.random()*.3+.1,
+      alpha:0,
       color:COLORS[Math.floor(Math.random()*COLORS.length)],
       phase:Math.random()*Math.PI*2
     };
@@ -1174,13 +1187,19 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     for(let i=0;i<COUNT;i++)particles.push(createParticle());
   }
 
+  let frameCount=0;
   function draw(){
     ctx.clearRect(0,0,w,h);
     const t=performance.now()*.0003;
+    // Update image zones every 30 frames
+    if(frameCount%30===0)updateImageZones();
+    frameCount++;
+
     particles.forEach(p=>{
       p.x+=p.vx+Math.sin(t+p.phase)*.15;
       p.y+=p.vy+Math.cos(t+p.phase*.7)*.1;
 
+      // Mouse repulsion
       const dx=p.x-mouse.x,dy=p.y-mouse.y;
       const dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<130){
@@ -1189,11 +1208,31 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
         p.y+=dy/dist*force;
       }
 
+      // Attract toward image zones + boost alpha
+      let nearImage=false;
+      imageZones.forEach(zone=>{
+        const zx=p.x-zone.cx,zy=p.y-zone.cy;
+        const zd=Math.sqrt(zx*zx+zy*zy);
+        if(zd<zone.radius){
+          nearImage=true;
+          // Gentle pull toward center
+          p.x-=zx*.002;
+          p.y-=zy*.002;
+        }
+      });
+
+      // Alpha: brighter near images
+      const targetAlpha=nearImage?p.baseAlpha+.25:p.baseAlpha;
+      p.alpha+=(targetAlpha-p.alpha)*.05;
+
+      // Size boost near images
+      const drawR=nearImage?p.r*1.4:p.r;
+
       if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10;
       if(p.y<-10)p.y=h+10;if(p.y>h+10)p.y=-10;
 
       ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.arc(p.x,p.y,drawR,0,Math.PI*2);
       ctx.fillStyle=p.color+p.alpha+')';
       ctx.fill();
     });
