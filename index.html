@@ -334,6 +334,19 @@ details p{color:var(--text);font-size:.85rem;padding:0 1rem 1.25rem;line-height:
 .cta-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
 .cta-video-bg video{width:100%;height:100%;object-fit:cover;opacity:.08;filter:saturate(.3)}
 
+/* VIDEO CAROUSEL */
+.video-carousel-section{overflow:hidden}
+.video-carousel{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2rem 0;scrollbar-width:none}
+.video-carousel::-webkit-scrollbar{display:none}
+.video-card{flex:0 0 320px;scroll-snap-align:start;border-radius:1rem;overflow:hidden;border:1px solid var(--border);position:relative;transition:all .4s ease}
+.video-card::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:1;transition:background .5s ease;pointer-events:none}
+.video-card:hover::before{background:rgba(0,0,0,0)}
+.video-card:hover{border-color:rgba(249,168,212,.25);transform:scale(1.02);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.video-card iframe{display:block}
+.video-carousel-nav{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
+.carousel-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.carousel-btn:hover{border-color:var(--accent);color:var(--accent)}
+
 /* GLOBAL SECTION GLOW (uniforme) */
 .section-glow{position:relative;overflow:hidden}
 .section-glow::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:35rem;height:35rem;background:radial-gradient(circle,rgba(249,168,212,.03),transparent 70%);pointer-events:none}
@@ -1036,6 +1049,39 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   </div>
 </section>
 
+<!-- VIDEO CAROUSEL -->
+<section class="section video-carousel-section">
+  <div class="section-inner">
+    <div class="section-label reveal"><span></span> Portafolio</div>
+    <h2 class="reveal">Proyectos que hemos <span class="accent">creado</span></h2>
+    <p class="section-desc reveal">Videos de presentación de algunos de nuestros clientes.</p>
+    <div class="video-carousel" id="videoCarousel">
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/veVj8G7m1aVI" title="AIRpro2" loading="lazy"></iframe></div>
+      </div>
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/Fm6JQePW_I2w" title="Odontics" loading="lazy"></iframe></div>
+      </div>
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/6T2Sn6o2v_ws" title="Medicina interna Willmer" loading="lazy"></iframe></div>
+      </div>
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/FABA4no4hDTo" title="Guillermo Ortopedista" loading="lazy"></iframe></div>
+      </div>
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/s4dQMB-8PbLg" title="LocalRank" loading="lazy"></iframe></div>
+      </div>
+      <div class="video-card">
+        <div style="padding:56.25% 0 0 0;position:relative;width:100%"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share" allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin" src="https://livid.com/embed/veVj8G7m1aVI" title="AIRpro2 - 2" loading="lazy"></iframe></div>
+      </div>
+    </div>
+    <div class="video-carousel-nav">
+      <button class="carousel-btn" id="carouselPrev" type="button" aria-label="Anterior">←</button>
+      <button class="carousel-btn" id="carouselNext" type="button" aria-label="Siguiente">→</button>
+    </div>
+  </div>
+</section>
+
 <!-- CTA FINAL -->
 <section class="section cta-final">
   <div class="section-inner">
@@ -1224,10 +1270,21 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   const menu=document.getElementById('mobileMenu');
   const overlay=document.getElementById('mobileOverlay');
   if(!btn||!menu)return;
-  function toggle(){btn.classList.toggle('open');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':''}
+  function toggle(){btn.classList.toggle('open');menu.classList.toggle('open');overlay.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';btn.setAttribute('aria-expanded',menu.classList.contains('open'))}
   btn.addEventListener('click',toggle);
   overlay.addEventListener('click',toggle);
   menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{if(menu.classList.contains('open'))toggle()}));
+})();
+
+// Video carousel navigation
+(function(){
+  const carousel=document.getElementById('videoCarousel');
+  const prev=document.getElementById('carouselPrev');
+  const next=document.getElementById('carouselNext');
+  if(!carousel||!prev||!next)return;
+  const scrollAmount=340;
+  prev.addEventListener('click',()=>{carousel.scrollBy({left:-scrollAmount,behavior:'smooth'})});
+  next.addEventListener('click',()=>{carousel.scrollBy({left:scrollAmount,behavior:'smooth'})});
 })();
 </script>
 </body>
