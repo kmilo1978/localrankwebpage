@@ -171,7 +171,7 @@ a{text-decoration:none;color:inherit}ul{list-style:none}img,video{display:block;
 .hero-overlay1{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.9),rgba(0,0,0,.5) 60%,transparent)}
 .hero-overlay2{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.3),transparent 30%,rgba(0,0,0,.85))}
 .hero-grid{position:absolute;inset:0;z-index:1;opacity:.03;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:6rem 6rem;pointer-events:none}
-.hero-particles{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hero-particles{position:fixed;inset:0;z-index:1;pointer-events:none}
 .hero-particles canvas{width:100%;height:100%}
 .hero-content{position:relative;z-index:10;padding:8rem 2rem 3rem;max-width:1400px;margin:0 auto;width:100%;animation:fadeInUp .8s ease-out}
 .hero-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text);margin-bottom:1.5rem;padding:.45rem 1rem;border:1px solid var(--border);border-radius:9999px;backdrop-filter:blur(4px)}
@@ -505,6 +505,9 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 </head>
 <body>
 
+<!-- GLOBAL PARTICLES -->
+<div class="hero-particles"><canvas id="particles"></canvas></div>
+
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
@@ -547,7 +550,6 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     <div class="hero-overlay2"></div>
   </div>
   <div class="hero-grid"></div>
-  <div class="hero-particles"><canvas id="particles"></canvas></div>
   <div class="hero-content">
     <div class="hero-social-proof">
       <img src="https://statics.pancake.vn/web-media-263/ec/70/8e/6f/1716c4391e86734d3ced641ec14bf7874ec9a0087dca310123059118.png" alt="Más de 50 dueños de negocios locales confían en LocalRank para su diseño web" style="height:40px;width:auto;border-radius:9999px">
@@ -1143,18 +1145,17 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
 
 <!-- SCRIPTS -->
 <script>
-// Canvas Particles
+// Canvas Particles (global)
 (function(){
   const canvas=document.getElementById('particles');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  const container=canvas.parentElement;
   let w,h,particles=[],mouse={x:-1000,y:-1000},raf;
-  const COUNT=150;
+  const COUNT=120;
   const COLORS=['rgba(249,168,212,','rgba(255,255,255,','rgba(249,168,212,'];
 
   function resize(){
-    w=container.clientWidth;h=container.clientHeight;
+    w=window.innerWidth;h=window.innerHeight;
     canvas.width=w*devicePixelRatio;canvas.height=h*devicePixelRatio;
     ctx.scale(devicePixelRatio,devicePixelRatio);
   }
@@ -1162,9 +1163,9 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
   function createParticle(){
     return{
       x:Math.random()*w,y:Math.random()*h,
-      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
-      r:Math.random()*2.5+.8,
-      alpha:Math.random()*.5+.2,
+      vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
+      r:Math.random()*2+.5,
+      alpha:Math.random()*.35+.1,
       color:COLORS[Math.floor(Math.random()*COLORS.length)],
       phase:Math.random()*Math.PI*2
     };
@@ -1179,24 +1180,20 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     ctx.clearRect(0,0,w,h);
     const t=performance.now()*.0003;
     particles.forEach(p=>{
-      // Gentle organic movement
-      p.x+=p.vx+Math.sin(t+p.phase)*.2;
-      p.y+=p.vy+Math.cos(t+p.phase*.7)*.15;
+      p.x+=p.vx+Math.sin(t+p.phase)*.15;
+      p.y+=p.vy+Math.cos(t+p.phase*.7)*.1;
 
-      // Mouse repulsion
       const dx=p.x-mouse.x,dy=p.y-mouse.y;
       const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<150){
-        const force=(150-dist)/150*1.2;
+      if(dist<130){
+        const force=(130-dist)/130*1;
         p.x+=dx/dist*force;
         p.y+=dy/dist*force;
       }
 
-      // Wrap around
       if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10;
       if(p.y<-10)p.y=h+10;if(p.y>h+10)p.y=-10;
 
-      // Draw
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fillStyle=p.color+p.alpha+')';
@@ -1205,16 +1202,8 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
     raf=requestAnimationFrame(draw);
   }
 
-  // Mouse tracking on hero section
-  const hero=container.closest('.hero');
-  if(hero){
-    hero.addEventListener('mousemove',e=>{
-      const rect=hero.getBoundingClientRect();
-      mouse.x=e.clientX-rect.left;mouse.y=e.clientY-rect.top;
-    });
-    hero.addEventListener('mouseleave',()=>{mouse.x=-1000;mouse.y=-1000});
-  }
-
+  document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+  document.addEventListener('mouseleave',()=>{mouse.x=-1000;mouse.y=-1000});
   window.addEventListener('resize',()=>{cancelAnimationFrame(raf);init();draw()});
   init();draw();
 })();
