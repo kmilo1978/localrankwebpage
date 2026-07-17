@@ -1215,18 +1215,17 @@ details[open] .faq-icon{transform:rotate(45deg) scale(1.1)}
         const zd=Math.sqrt(zx*zx+zy*zy);
         if(zd<zone.radius){
           nearImage=true;
-          // Gentle pull toward center
-          p.x-=zx*.002;
-          p.y-=zy*.002;
+          p.x-=zx*.001;
+          p.y-=zy*.001;
         }
       });
 
-      // Alpha: brighter near images
-      const targetAlpha=nearImage?p.baseAlpha+.25:p.baseAlpha;
+      // Alpha: slightly brighter near images (30% boost vs 70% base)
+      const targetAlpha=nearImage?p.baseAlpha+.1:p.baseAlpha;
       p.alpha+=(targetAlpha-p.alpha)*.05;
 
-      // Size boost near images
-      const drawR=nearImage?p.r*1.4:p.r;
+      // Size: subtle boost near images
+      const drawR=nearImage?p.r*1.15:p.r;
 
       if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10;
       if(p.y<-10)p.y=h+10;if(p.y>h+10)p.y=-10;
